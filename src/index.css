@@ -5,9 +5,6 @@ body{
 @theme{
     --font-orbitron: "Orbitron", sans-serif;
     --font-inter: "Inter", sans-serif;
-    --color-darkGray: "#2A2A2A";
-    --color-silver: "#C0C0C0";
-    --color-lightBlue: "#ADD8E6";
 }
 @import "tailwindcss";
 @plugin "daisyui";

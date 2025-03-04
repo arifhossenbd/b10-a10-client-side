@@ -3,6 +3,8 @@ import Main from "../layouts/Main";
 import Home from "../component/Home/Home";
 import ErrorPage from "../pages/ErrorPage/ErrorPage";
 import AddReview from "../pages/AddReview/AddReview";
+import Login from "../pages/Auth/Login";
+import Register from "../pages/Auth/Register";
 const router = createBrowserRouter([
     {
         path: '/',
@@ -16,6 +18,14 @@ const router = createBrowserRouter([
             {
                 path: '/add-reviews',
                 element: <AddReview/>
+            },
+            {
+                path: '/login',
+                element: <Login/>
+            },
+            {
+                path: '/register',
+                element: <Register/>
             }
         ]
     }
