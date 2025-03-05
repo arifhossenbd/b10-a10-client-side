@@ -4,14 +4,15 @@ import { Helmet } from "react-helmet-async";
 import AuthForm from "../../component/ReusableComponent/AuthForm/AuthForm";
 import { useContext } from "react";
 import { AuthContext } from "../../provider/AuthProvider/AuthContext";
+import AuthAlert from "../../component/ReusableComponent/AuthAlert/AuthAlert";
 
 const Register = () => {
 
-  const { user, createUser, setLoading, setError } = useContext(AuthContext);
+  const { user, setUser, createUser, updateUser, setLoading, setError } = useContext(AuthContext);
   const location = useLocation();
   const navigate = useNavigate();
 
-  const name = (
+  const nameField = (
     <div className={`fieldset ${transition}`}>
       <label className="fieldset-label font-semibold md:text-lg">Name</label>
       <input
@@ -22,7 +23,7 @@ const Register = () => {
       />
     </div>
   );
-  const photo = (
+  const photoField = (
     <div>
       <label className="fieldset-label font-semibold md:text-lg">Photo</label>
       <input
@@ -34,17 +35,19 @@ const Register = () => {
     </div>
   );
 
-  const regex =
+  const passwordRegex =
     /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
 
-  const handleRegister = (e) => {
+  const handleRegister = async (e) => {
     e.preventDefault();
     setLoading(true);
     const form = e.target;
+    const name = form.name.value;
     const email = form.email.value;
     const password = form.password.value;
+    const photo = form.photo.value;
     if (user?.displayName === form.name.value || user?.email === email) return setError("You are already registered");
-    if (!regex.test(password)) {
+    if (!passwordRegex?.test(password)) {
       setError(
         "Password must contain at least 8 characters, including at least one uppercase letter, one lowercase letter, one digit, and one special character."
       );
@@ -52,29 +55,35 @@ const Register = () => {
       return;
     } else {
       setError("");
-    }
+    };
 
-    createUser(email, password)
-      .then((result) => {
-        setLoading(false);
-        const from = location.state?.from?.pathname || "/";
-        navigate(from, { replace: true });
-        console.log(result);
-      })
-      .catch((error) => {
-        console.error(error);
-        setLoading(false);
-      });
+    try {
+      const result = await createUser(email, password);
+      const newUser = result?.user;
+      setUser(newUser);
+
+      if(newUser){
+        await updateUser({ displayName: name, photoURL: photo});
+        AuthAlert({error: null, user: newUser, greeting: "Congratulations", method: "register"});
+        navigate(location.state?.from?.pathname || "/", {replace: true});
+      }
+    } catch (error) {
+      AuthAlert({error: error?.message || "Registration failed"});
+      setError(error?.message || "Registration failed");
+    } finally{
+      setLoading(false);
+    }
   };
 
   return (
     <div className="pt-12">
       <Helmet title="Registration - Chill Gamer" />
       <AuthForm
-        name={name}
-        photo={photo}
+        name={nameField}
+        photo={photoField}
         btnText="Registration"
         handleSubmit={handleRegister}
+        passwordRegex={passwordRegex}
       >
         <div className="hero lg:min-w-96 min-h-full bg-[url(/assets/1.jpg)]">
           <div className="hero-overlay"></div>

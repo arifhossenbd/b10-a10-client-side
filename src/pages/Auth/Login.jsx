@@ -1,18 +1,45 @@
 import { Helmet } from "react-helmet-async";
 import AuthForm from "../../component/ReusableComponent/AuthForm/AuthForm";
 import { transition } from "../../config/transition";
-import { Link } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useContext } from "react";
 import { AuthContext } from "../../provider/AuthProvider/AuthContext";
+import Swal from "sweetalert2";
+import AuthAlert from "../../component/ReusableComponent/AuthAlert/AuthAlert";
 
 const Login = () => {
-  const { user } = useContext(AuthContext);
-  const handleLogin = (e) => {
+  const { login, setLoading } = useContext(AuthContext);
+  const location = useLocation();
+  const navigate = useNavigate();
+
+  const handleLogin = async (e) => {
     e.preventDefault();
+    setLoading(true);
     const form = e.target;
     const email = form.email.value;
     const password = form.password.value;
-    console.log(email, password, user);
+
+    try {
+      const result = await login(email, password);
+      const loggedUser = result?.user;
+      if (loggedUser?.email !== email) {
+        AuthAlert({
+          error: null,
+          user: loggedUser,
+          greeting: "Welcome Back",
+          method: "login",
+        });
+        navigate(location.state?.from?.pathname || "/", { replace: true });
+      } else {
+        Swal.fire({
+          icon: "error",
+          title: "Oops",
+          text: "An account already exists with a different sign-in method.",
+        });
+      }
+    } catch (error) {
+      AuthAlert({ error: error?.message || "Login failed" });
+    }
   };
 
   return (

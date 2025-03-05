@@ -12,11 +12,11 @@ import NavLinks from "../NavLinks/NavLinks";
 import { transition } from "../../config/transition";
 import { useContext, useEffect, useState } from "react";
 import { AuthContext } from "../../provider/AuthProvider/AuthContext";
+import AuthAlert from "../ReusableComponent/AuthAlert/AuthAlert";
+import Swal from "sweetalert2";
 
 const Navbar = () => {
-
-  const { user } = useContext(AuthContext);
-  console.log(user);
+  const { user, logOutUser } = useContext(AuthContext);
   const location = useLocation();
   const presentPath = location?.pathname;
   // State to track if the user has scrolled down
@@ -34,6 +34,20 @@ const Navbar = () => {
     window.addEventListener("scroll", handleScroll); // Add scroll listener
     return () => window.removeEventListener("scroll", handleScroll); // Cleanup
   }, []);
+
+  const handleLogout = () => {
+    logOutUser()
+      .then(() => {
+        Swal.fire({
+          icon: "success",
+          title: "Logged Out!",
+          text: "You have successfully logged out.",
+        });
+      })
+      .catch((error) => {
+        AuthAlert({ error: error || {} });
+      });
+  };
 
   return (
     <div className={`${transition} lg:relative z-50`}>
@@ -166,7 +180,7 @@ const Navbar = () => {
               </div>
               <ul
                 tabIndex={0}
-                className="menu menu-sm dropdown-content bg-base-100 flex justify-start rounded-box z-1 mt-8 min-w-40 p-2 shadow hover:text-gray-600 text-gray-700"
+                className={`menu menu-sm dropdown-content bg-base-100 flex justify-start rounded-box z-1 ${isScrolled ? `mt-8` : `mt-3`} min-w-40 p-2 shadow hover:text-gray-600 text-gray-700`}
               >
                 <NavLinks />
               </ul>
@@ -191,26 +205,38 @@ const Navbar = () => {
               role="button"
               className="btn btn-ghost btn-circle border border-stone-400 avatar hover:border-stone-300 hover:text-white"
             >
-              <div className={`text-lg text-stone-500 ${transition}`}>
-                <FaUser />
-              </div>
+              {user &&
+                (user?.photoURL ? (
+                  <img src={user?.photoURL} className="w-10 h-10 rounded-full" alt="user" />
+                ) : (
+                  <div className={`text-lg text-stone-500 ${transition}`}>
+                    <FaUser />
+                  </div>
+                ))}
             </div>
             <ul
               tabIndex={0}
-              className="menu menu-sm dropdown-content bg-base-200 hover:text-gray-600 text-gray-700 rounded-box z-1 mt-6 w-52 p-2 shadow"
+              className={`menu menu-sm dropdown-content bg-base-200 hover:text-gray-600 text-gray-700 rounded-box z-1 ${isScrolled ? `mt-6` : `mt-1`} w-52 p-2 shadow`}
             >
-              <li>
-                <a className="justify-between">
-                  Name
-                  <span className="badge">New</span>
-                </a>
-              </li>
-              <li>
-                <a>Email</a>
-              </li>
-              <li>
-                <a>Logout</a>
-              </li>
+              {user ? (
+                <div>
+                  <li>
+                    <a className="justify-between">{user?.displayName || user?.email}</a>
+                  </li>
+                  <li onClick={handleLogout}>
+                    <a>Logout</a>
+                  </li>
+                </div>
+              ) : (
+                <div className="flex">
+                  <li>
+                    <Link to="/login">Login</Link>
+                  </li>
+                  <li>
+                    <Link to="/register">Registration</Link>
+                  </li>
+                </div>
+              )}
             </ul>
           </div>
         </div>
