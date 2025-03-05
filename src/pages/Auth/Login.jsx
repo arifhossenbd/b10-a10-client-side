@@ -36,9 +36,11 @@ const Login = () => {
           title: "Oops",
           text: "An account already exists with a different sign-in method.",
         });
+        setLoading(false);
       }
     } catch (error) {
       AuthAlert({ error: error?.message || "Login failed" });
+      setLoading(false)
     }
   };
 
@@ -56,7 +58,7 @@ const Login = () => {
               <p
                 className={`mb-2 md:mb-4 text-sm md:text-base hover:text-red-600 ${transition}`}
               ></p>
-              <h6 className="text-wrap text-sm">
+              <h6 className="text-wrap text-sm font-inter">
                 Don't haven't account? Please{" "}
                 <Link
                   className={`underline hover:text-red-500 tracking-widest ${transition}`}

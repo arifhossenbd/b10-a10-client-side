@@ -10,12 +10,13 @@ import { useContext, useState } from "react";
 import { AuthContext } from "../../../provider/AuthProvider/AuthContext";
 import Button from "../Buttons/Button";
 
-const AuthForm = ({ children, name, photo, btnText, handleSubmit, regex }) => {
+const AuthForm = ({ children, name, photo, btnText, handleSubmit }) => {
   const { user, error, loginWithGoogle, loginWithFacebook, loginWithGithub } =
     useContext(AuthContext);
   const [showPassword, setShowPassword] = useState(false);
   const [passwordValue, setPasswordValue] = useState("");
-  const passwordChecked = regex?.test(passwordValue);
+  const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+  const passwordChecked = passwordRegex.test(passwordValue);
   const handleLoginWithGoogle = async () => {
     const result = await loginWithGoogle()
     return result;
@@ -32,7 +33,7 @@ const AuthForm = ({ children, name, photo, btnText, handleSubmit, regex }) => {
   
   return (
     <div className="px-4 md:px-0 md:w-11/12 mx-auto my-8 mt-24 lg:mt-12 flex items-center min-h-screen">
-      <div className="lg:flex justify-between mx-auto shadow-xl">
+      <div className="lg:flex justify-between mx-auto shadow-xl font-orbitron">
         <div className="text-center lg:text-left">{children}</div>
         <div className="card bg-base-100 mx-auto lg:w-96 shrink-0 rounded-none h-full">
           <div
@@ -46,7 +47,7 @@ const AuthForm = ({ children, name, photo, btnText, handleSubmit, regex }) => {
               <input
                 name="email"
                 type="email"
-                className="border px-2 py-2 w-full border-stone-300 focus:outline-none focus:border-stone-400 rounded-none"
+                className="border font-inter px-2 py-2 w-full border-stone-300 focus:outline-none focus:border-stone-400 rounded-none"
                 placeholder="Email"
               />
               <label className="fieldset-label font-semibold md:text-lg">
@@ -56,9 +57,9 @@ const AuthForm = ({ children, name, photo, btnText, handleSubmit, regex }) => {
                 <input
                   name="password"
                   value={passwordValue}
-                  onChange={(e) => setPasswordValue(e.target.value)}
+                  onChange={(e) => setPasswordValue(e?.target?.value)}
                   type={showPassword ? `text` : `password`}
-                  className="border px-2 pr-8 py-2 w-full border-stone-300 focus:outline-none focus:border-stone-400 rounded-none"
+                  className="border font-inter px-2 pr-8 py-2 w-full border-stone-300 focus:outline-none focus:border-stone-400 rounded-none"
                   placeholder="Password"
                 />
                 <div
@@ -105,7 +106,7 @@ const AuthForm = ({ children, name, photo, btnText, handleSubmit, regex }) => {
                 <FaGithub />
               </button>
             </div>
-            <span className="text-red-500 text-wrap text-sm">{error}</span>
+            <span className="text-red-500 text-wrap text-sm font-inter">{error}</span>
           </div>
         </div>
       </div>

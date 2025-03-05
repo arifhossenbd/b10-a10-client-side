@@ -57,11 +57,11 @@ const Navbar = () => {
           presentPath === `/` ? `border-b-gray-100` : `border-b-gray-200`
         } gap-4 lg:gap-0 ${transition}`}
       >
-        <div className="flex flex-wrap items-center gap-2 md:gap-4">
+        <div className="flex flex-wrap items-center gap-2 md:gap-4 font-orbitron text-xs">
           <p className="flex items-center gap-2 text-red-600">
             {" "}
             <FaPhoneAlt />{" "}
-            <Link to={`tel:+12324567890`}>
+            <Link className="tracking-widest" to={`tel:+12324567890`}>
               <span
                 className={`${
                   presentPath === "/"
@@ -73,9 +73,9 @@ const Navbar = () => {
               </span>
             </Link>
           </p>
-          <div className="flex items-center gap-2 md:gap-4">
+          <div className="flex items-center gap-2">
             <FaRegUser className="text-red-600" />
-            <div className="flex items-center gap-2 md:gap-3">
+            <div className="flex items-center gap-2 tracking-widest">
               <Link
                 to="/login"
                 className={`${
@@ -157,7 +157,7 @@ const Navbar = () => {
         }`}
       >
         <div
-          className={`navbar px-4 md:px-0 md:w-11/12 mx-auto flex items-center justify-between gap-2 mt-2 ${transition}`}
+          className={`navbar px-4 md:px-0 md:w-11/12 mx-auto flex items-center justify-between gap-2 mt-2 font-orbitron font-semibold ${transition}`}
         >
           <div className={`flex items-center gap-2 lg:gap-0 ${transition}`}>
             <div className={`dropdown ${transition}`}>
@@ -180,7 +180,9 @@ const Navbar = () => {
               </div>
               <ul
                 tabIndex={0}
-                className={`menu menu-sm dropdown-content bg-base-100 flex justify-start rounded-box z-1 ${isScrolled ? `mt-8` : `mt-3`} min-w-40 p-2 shadow hover:text-gray-600 text-gray-700`}
+                className={`menu menu-sm dropdown-content bg-base-100 flex justify-start rounded-box z-1 ${
+                  isScrolled ? `mt-8` : `mt-3`
+                } min-w-40 p-2 shadow hover:text-gray-600 text-gray-700`}
               >
                 <NavLinks />
               </ul>
@@ -205,23 +207,30 @@ const Navbar = () => {
               role="button"
               className="btn btn-ghost btn-circle border border-stone-400 avatar hover:border-stone-300 hover:text-white"
             >
-              {user &&
-                (user?.photoURL ? (
-                  <img src={user?.photoURL} className="w-10 h-10 rounded-full" alt="user" />
-                ) : (
-                  <div className={`text-lg text-stone-500 ${transition}`}>
-                    <FaUser />
-                  </div>
-                ))}
+              {user ? (
+                <img
+                  src={user?.photoURL}
+                  className="w-10 h-10 rounded-full"
+                  alt="user"
+                />
+              ) : (
+                <div className={`text-lg text-stone-500 ${transition}`}>
+                  <FaUser />
+                </div>
+              )}
             </div>
             <ul
               tabIndex={0}
-              className={`menu menu-sm dropdown-content bg-base-200 hover:text-gray-600 text-gray-700 rounded-box z-1 ${isScrolled ? `mt-6` : `mt-1`} w-52 p-2 shadow`}
+              className={`menu menu-sm dropdown-content bg-base-200 hover:text-gray-600 text-gray-700 rounded-box z-1 ${
+                isScrolled ? `mt-6` : `mt-1`
+              } w-52 p-2 shadow tracking-wide`}
             >
               {user ? (
                 <div>
                   <li>
-                    <a className="justify-between">{user?.displayName || user?.email}</a>
+                    <a className="justify-between">
+                      {user?.displayName || user?.email}
+                    </a>
                   </li>
                   <li onClick={handleLogout}>
                     <a>Logout</a>

@@ -5,7 +5,7 @@ import { transition } from "../../config/transition";
 const ErrorPage = () => {
     const error = useRouteError();
     return (
-        <div className="flex flex-col gap-2 md:gap-4 items-center text-center px-4 md:px-0 justify-center h-screen">
+        <div className="flex flex-col gap-2 md:gap-4 items-center text-center px-4 md:px-0 justify-center h-screen font-orbitron">
             <p className="text-xl md:text-2xl font-bold">{error.status}</p>
             <h1 className="text-2xl md:text-3xl lg:text-4xl font-bold">{error.statusText}</h1>
             <p className="font-semibold">Sorry, we couldn’t find the page you’re looking for.</p>

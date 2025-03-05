@@ -1,13 +1,10 @@
 import { FaArrowRight } from "react-icons/fa";
 import { transition } from "../../../config/transition";
 
-const Button = ({user, btnText}) => {
+const Button = ({btnText}) => {
   return (
     <button
-      disabled={user?.displayName}
-      className={`group flex items-center gap-1 btn bg-transparent border-red-600 text-red-600 hover:text-white hover:bg-red-600 mt-4 rounded-none ${transition} ${
-        user?.displayName && `cursor-not-allowed`
-      }`}
+      className={`font-orbitron group flex items-center gap-1 btn bg-transparent border-red-600 text-red-600 hover:text-white hover:bg-red-600 mt-4 rounded-none ${transition}`}
     >
       {btnText}
       <FaArrowRight

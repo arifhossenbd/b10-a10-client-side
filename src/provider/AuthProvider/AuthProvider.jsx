@@ -99,9 +99,12 @@ const AuthProvider = ({ children }) => {
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
-      currentUser !== null
-        ? setUser(currentUser) && setLoading(false)
-        : setLoading(false) && setUser(null);
+      if(currentUser !== null){
+        setUser(currentUser);
+      }else{
+        setUser(null);
+      }
+      setLoading(false)
       return () => {
         unsubscribe();
       }; // Clearance
