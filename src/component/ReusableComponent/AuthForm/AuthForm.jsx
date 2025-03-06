@@ -10,7 +10,7 @@ import { useContext, useState } from "react";
 import { AuthContext } from "../../../provider/AuthProvider/AuthContext";
 import Button from "../Buttons/Button";
 
-const AuthForm = ({ children, name, photo, btnText, handleSubmit }) => {
+const AuthForm = ({ children, name, photo, btnText, handleSubmit, loading }) => {
   const { user, error, loginWithGoogle, loginWithFacebook, loginWithGithub } =
     useContext(AuthContext);
   const [showPassword, setShowPassword] = useState(false);
@@ -80,7 +80,7 @@ const AuthForm = ({ children, name, photo, btnText, handleSubmit }) => {
                 </div>
               </div>
               {photo}
-              <Button btnText={btnText} user={user} />
+              <Button btnText={btnText} user={user} loading={loading} />
             </form>
             <div className="flex items-center gap-5 text-stone-200">
               <hr className="h-0.5 w-full" />

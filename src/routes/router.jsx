@@ -5,6 +5,7 @@ import ErrorPage from "../pages/ErrorPage/ErrorPage";
 import AddReview from "../pages/AddReview/AddReview";
 import Login from "../pages/Auth/Login";
 import Register from "../pages/Auth/Register";
+import AllReview from "../pages/AllReview/AllReview";
 const router = createBrowserRouter([
     {
         path: '/',
@@ -16,8 +17,12 @@ const router = createBrowserRouter([
                 element: <Home/>
             },
             {
-                path: '/add-reviews',
+                path: '/add-review',
                 element: <AddReview/>
+            },
+            {
+                path: '/all-review',
+                element: <AllReview/>
             },
             {
                 path: '/login',

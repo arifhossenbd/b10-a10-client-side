@@ -5,15 +5,23 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useContext } from "react";
 import { AuthContext } from "../../provider/AuthProvider/AuthContext";
 import Swal from "sweetalert2";
-import AuthAlert from "../../component/ReusableComponent/AuthAlert/AuthAlert";
 
 const Login = () => {
-  const { login, setLoading } = useContext(AuthContext);
+  const { login, setLoading, loading, user, setError } = useContext(AuthContext);
   const location = useLocation();
   const navigate = useNavigate();
 
   const handleLogin = async (e) => {
     e.preventDefault();
+    if (user) {
+      Swal.fire({
+        icon: "error",
+        title: `${user?.displayName || "Dear User"}`,
+        text: "You are already logged in! Please log out before trying again.",
+      });
+      setError("You are already logged in!");
+      return;
+    }
     setLoading(true);
     const form = e.target;
     const email = form.email.value;
@@ -22,32 +30,30 @@ const Login = () => {
     try {
       const result = await login(email, password);
       const loggedUser = result?.user;
-      if (loggedUser?.email !== email) {
-        AuthAlert({
-          error: null,
-          user: loggedUser,
-          greeting: "Welcome Back",
-          method: "login",
-        });
-        navigate(location.state?.from?.pathname || "/", { replace: true });
-      } else {
+      if (loggedUser) {
         Swal.fire({
-          icon: "error",
-          title: "Oops",
-          text: "An account already exists with a different sign-in method.",
-        });
-        setLoading(false);
+                  icon: "success",
+                  title: `Welcome Back, ${user?.displayName || "Dear User"}`,
+                  text: "You have successfully logged in!",
+                });
+        navigate(location.state?.from?.pathname || "/", { replace: true });
+        return;
       }
     } catch (error) {
-      AuthAlert({ error: error?.message || "Login failed" });
-      setLoading(false)
+      Swal.fire({
+              icon: "error",
+              title: "Login Failed",
+              text: error?.message || "Invalid email or password. Please try again.",
+            });
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
     <div>
       <Helmet title="Login - Chill Gamer" />
-      <AuthForm btnText="Login" handleSubmit={handleLogin}>
+      <AuthForm btnText="Login" handleSubmit={handleLogin} loading={loading}>
         <div className="hero lg:min-w-96 min-h-full bg-[url(/assets/1.jpg)]">
           <div className="hero-overlay"></div>
           <div className="hero-content text-neutral-content">

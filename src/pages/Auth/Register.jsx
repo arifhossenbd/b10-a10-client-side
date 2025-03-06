@@ -4,11 +4,10 @@ import { Helmet } from "react-helmet-async";
 import AuthForm from "../../component/ReusableComponent/AuthForm/AuthForm";
 import { useContext } from "react";
 import { AuthContext } from "../../provider/AuthProvider/AuthContext";
-import AuthAlert from "../../component/ReusableComponent/AuthAlert/AuthAlert";
 import Swal from "sweetalert2";
 
 const Register = () => {
-  const { user, setUser, createUser, updateUser, setLoading, setError } =
+  const { user, setUser, createUser, updateUser, setLoading, setError, loading } =
     useContext(AuthContext);
   const location = useLocation();
   const navigate = useNavigate();
@@ -39,7 +38,7 @@ const Register = () => {
       setLoading(false);
       return;
     } else {
-      setError("");
+     setError("");
     }
 
     try {
@@ -49,16 +48,19 @@ const Register = () => {
 
       if (newUser) {
         await updateUser({ displayName: name, photoURL: photo });
-        AuthAlert({
-          error: null,
-          user: newUser,
-          greeting: "Congratulations",
-          method: "register",
+        Swal.fire({
+          icon: "success",
+          title: `Congratulations, ${user?.displayName || "Dear User"}`,
+          text: "You have successfully registered!",
         });
         navigate(location.state?.from?.pathname || "/", { replace: true });
       }
     } catch (error) {
-      AuthAlert({ error: error?.message || "Registration failed" });
+      Swal.fire({
+        icon: "error",
+        title: "Registration Failed",
+        text: error?.message || "Something went wrong. Please try again later.",
+      });
       setLoading(false);
       setError(error?.message || "Registration failed");
     } finally {
@@ -79,7 +81,7 @@ const Register = () => {
   );
   const photoField = (
     <div>
-      <label className="fieldset-label font-semibold md:text-lg">Photo</label>
+      <label className="fieldset-label font-semibold md:text-lg">Photo </label>
       <input
         name="photo"
         type="text"
@@ -97,12 +99,13 @@ const Register = () => {
         photo={photoField}
         btnText="Registration"
         handleSubmit={handleRegister}
+        loading={loading}
       >
         <div className="hero lg:min-w-96 min-h-full bg-[url(/assets/1.jpg)]">
           <div className="hero-overlay"></div>
           <div className="hero-content text-neutral-content">
             <div className="max-w-lg">
-              <h1 className="mb-2 md:mb-4 text-2xl md:text-3xl lg:text-4xl font-bold font-inter">
+              <h1 className="mb-2 md:mb-4 text-2xl md:text-3xl lg:text-4xl font-bold font-orbitron">
                 Registration
               </h1>
               <p

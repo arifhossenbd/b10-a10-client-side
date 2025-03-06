@@ -16,7 +16,7 @@ import AuthAlert from "../ReusableComponent/AuthAlert/AuthAlert";
 import Swal from "sweetalert2";
 
 const Navbar = () => {
-  const { user, logOutUser } = useContext(AuthContext);
+  const { user, logOutUser, loading } = useContext(AuthContext);
   const location = useLocation();
   const presentPath = location?.pathname;
   // State to track if the user has scrolled down
@@ -201,53 +201,57 @@ const Navbar = () => {
           <ul className="hidden lg:flex">
             <NavLinks />
           </ul>
-          <div className="dropdown dropdown-end w-fit">
-            <div
-              tabIndex={0}
-              role="button"
-              className="btn btn-ghost btn-circle border border-stone-400 avatar hover:border-stone-300 hover:text-white"
-            >
-              {user ? (
-                <img
-                  src={user?.photoURL}
-                  className="w-10 h-10 rounded-full"
-                  alt="user"
-                />
-              ) : (
-                <div className={`text-lg text-stone-500 ${transition}`}>
-                  <FaUser />
-                </div>
-              )}
+          {loading ? (
+            <span className="loading loading-spinner loading-xl"></span>
+          ) : (
+            <div className="dropdown dropdown-end w-fit">
+              <div
+                tabIndex={0}
+                role="button"
+                className="btn btn-ghost btn-circle border border-stone-400 avatar hover:border-stone-300 hover:text-white"
+              >
+                {user ? (
+                  <img
+                    src={user?.photoURL}
+                    className="w-10 h-10 rounded-full"
+                    alt="user"
+                  />
+                ) : (
+                  <div className={`text-lg text-stone-500 ${transition}`}>
+                    <FaUser />
+                  </div>
+                )}
+              </div>
+              <ul
+                tabIndex={0}
+                className={`menu menu-sm dropdown-content bg-base-200 hover:text-gray-600 text-gray-700 rounded-box z-1 ${
+                  isScrolled ? `mt-6` : `mt-1`
+                } w-52 p-2 shadow tracking-wide`}
+              >
+                {user ? (
+                  <div>
+                    <li>
+                      <a className="justify-between">
+                        {user?.displayName || user?.email}
+                      </a>
+                    </li>
+                    <li onClick={handleLogout}>
+                      <a>Logout</a>
+                    </li>
+                  </div>
+                ) : (
+                  <div className="flex">
+                    <li>
+                      <Link to="/login">Login</Link>
+                    </li>
+                    <li>
+                      <Link to="/register">Registration</Link>
+                    </li>
+                  </div>
+                )}
+              </ul>
             </div>
-            <ul
-              tabIndex={0}
-              className={`menu menu-sm dropdown-content bg-base-200 hover:text-gray-600 text-gray-700 rounded-box z-1 ${
-                isScrolled ? `mt-6` : `mt-1`
-              } w-52 p-2 shadow tracking-wide`}
-            >
-              {user ? (
-                <div>
-                  <li>
-                    <a className="justify-between">
-                      {user?.displayName || user?.email}
-                    </a>
-                  </li>
-                  <li onClick={handleLogout}>
-                    <a>Logout</a>
-                  </li>
-                </div>
-              ) : (
-                <div className="flex">
-                  <li>
-                    <Link to="/login">Login</Link>
-                  </li>
-                  <li>
-                    <Link to="/register">Registration</Link>
-                  </li>
-                </div>
-              )}
-            </ul>
-          </div>
+          )}
         </div>
       </div>
     </div>

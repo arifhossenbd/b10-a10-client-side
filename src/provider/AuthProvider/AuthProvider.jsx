@@ -12,17 +12,26 @@ import {
   updateProfile,
 } from "firebase/auth";
 import auth from "../../firebase/firebase.config";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import AuthAlert from "../../component/ReusableComponent/AuthAlert/AuthAlert";
 
 const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+
+  const navigate = useNavigate();
+  const location = useLocation();
+
   const googleProvider = new GoogleAuthProvider();
   const facebookProvider = new FacebookAuthProvider();
   const githubProvider = new GithubAuthProvider();
-  const navigate = useNavigate();
+
+  const handleNavigate = () => {
+    const from = location?.state?.from?.pathname || "/";
+    navigate(from, {replace: true});
+    return;
+  }
 
   // Registration method
   const createUser = (email, password) => {
@@ -47,9 +56,9 @@ const AuthProvider = ({ children }) => {
         greeting: "Congrats",
         socialMethod: "Google",
       });
-      navigate("/", { state: { from: location } });
+     handleNavigate();
     } catch (error) {
-      AuthAlert({ error: error || {} });
+      AuthAlert({ error: error || "Something went wrong" });
     } finally {
       setLoading(false);
     }
@@ -68,9 +77,9 @@ const AuthProvider = ({ children }) => {
         greeting: "Congrats",
         socialMethod: "Facebook",
       });
-      navigate("/", { state: { from: location } });
+      handleNavigate();
     } catch (error) {
-      AuthAlert({ error: error || {} });
+      AuthAlert({ error: error || "Something went wrong" });
     } finally {
       setLoading(false);
     }
@@ -89,9 +98,9 @@ const AuthProvider = ({ children }) => {
         greeting: "Congrats",
         socialMethod: "GitHub",
       });
-      navigate("/", { state: { from: location } });
+      handleNavigate();
     } catch (error) {
-      AuthAlert({ error: error || {} });
+      AuthAlert({ error: error || "Something went wrong" });
     } finally {
       setLoading(false);
     }
@@ -99,23 +108,21 @@ const AuthProvider = ({ children }) => {
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
-      if(currentUser !== null){
-        setUser(currentUser);
-      }else{
-        setUser(null);
-      }
-      setLoading(false)
-      return () => {
-        unsubscribe();
-      }; // Clearance
+      setUser(currentUser || null);
+      setLoading(false);
     });
+    return () => unsubscribe;
   }, []);
 
   // Update user profile
   const updateUser = async (updateInfo) => {
-    if (!auth?.currentUser) throw new Error("Authenticated user not found");
+    try {
+      if (!auth?.currentUser) throw new Error("Authenticated user not found");
     await updateProfile(auth?.currentUser, updateInfo);
-    setUser({ ...auth?.currentUser });
+    setUser({...auth.currentUser});
+    } catch (error) {
+      setError(error)
+    }
   };
 
   // logout user
