@@ -11,7 +11,10 @@ const initialReview = {
   genres: "",
   reviewDescription: "",
   rating: "",
-  publishingYear: ""
+  publishingYear: "",
+  userName: "",
+  userEmail: "",
+  timeStamp: ""
 };
 const AddReview = () => {
   const { user, loading } = useContext(AuthContext);

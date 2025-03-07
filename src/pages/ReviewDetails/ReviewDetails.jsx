@@ -5,6 +5,7 @@ import { transition } from "../../config/transition";
 import Button from "../../component/ReusableComponent/Buttons/Button";
 import { AuthContext } from "../../provider/AuthProvider/AuthContext";
 import Swal from "sweetalert2";
+import BackToHomeButton from "../../component/ReusableComponent/Buttons/BackToHomeButton";
 
 const ReviewDetails = () => {
   const paramsId = useParams();
@@ -52,6 +53,7 @@ const ReviewDetails = () => {
           {" "}
           No review found.
         </span>{" "}
+        <BackToHomeButton/>
       </div>
     );
   }

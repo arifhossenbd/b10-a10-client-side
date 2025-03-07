@@ -15,7 +15,7 @@ const Reviews = ({ reviews }) => {
         />
       </figure>
       <div className={`card-body p-4 ${transition}`}>
-        <h2 className="card-title text-xl font-bold">{title}</h2>
+        <h2 className="card-title md:text-xl font-bold">{title}</h2>
         <p className="text-gray-600">{genres}</p>
         <div className="flex items-center mt-2">
           <span className="text-yellow-500 font-semibold">Rating: {rating}</span>

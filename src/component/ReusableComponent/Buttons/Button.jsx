@@ -11,9 +11,9 @@ const Button = ({ btnText, loading, fetching }) => {
         <span className="loading loading-dots loading-xl"></span>
       ) : (
         <>
-          {btnText}
+          <span className={`group-hover:-translate-x-1 translate-x-2 ${transition}`}>{btnText}</span>
           <FaArrowRight
-            className={`group-hover:translate-x-1 -translate-x-4 ${transition} group-hover:text-white text-transparent`}
+            className={`group-hover:translate-x-1 -translate-x-3 ${transition} group-hover:opacity-100 opacity-0`}
           />
         </>
       )}

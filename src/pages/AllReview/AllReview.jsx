@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 import crudOperation from "../../utils/apiClient";
 import Reviews from "../Reviews/Reviews";
 import { transition } from "../../config/transition";
+import Loading from "../../component/Loading/Loading";
+import NotFound from "../../component/NotFound/NotFound";
 
 const AllReview = () => {
   const [data, setData] = useState([]);
@@ -23,18 +25,14 @@ const AllReview = () => {
 
   if(loading){
     return (
-      <div className="flex items-center h-screen justify-center">
-          <span className="loading loading-dots loading-xl"></span>{" "}
-        </div>
+      <Loading/>
     );
   };
 
-  if(!data){
+  if (!data || data?.length === 0) {
     return (
-      <div className="flex items-center h-screen justify-center font-orbitron">
-          <span className="text-xl md:text-2xl font-semibold text-gray-600"> No review found.</span>{" "}
-        </div>
-    )
+      <NotFound text="All review is not available!"/>
+    );
   }
   
   return (

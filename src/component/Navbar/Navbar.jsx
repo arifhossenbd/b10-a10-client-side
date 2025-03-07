@@ -189,7 +189,7 @@ const Navbar = () => {
             </div>
             <Link className="flex items-center gap-2" to="/">
               <img
-                src="/logo1.png"
+                src="/logo.png"
                 className="md:h-12 md:w-12 h-10 w-10"
                 alt="Logo"
               />

@@ -4,7 +4,7 @@ import Button from "../Buttons/Button";
 const CrudRelatedForm = ({
   children,
   btnText,
-  review,
+  review = {},
   handleSubmit,
   handleChange,
   loading,
@@ -19,7 +19,7 @@ const CrudRelatedForm = ({
     userName,
     userEmail,
     publishingYear
-  } = review || "";
+  } = review;
   const onsubmit = (e) => {
     e.preventDefault();
     handleSubmit(review);
@@ -131,30 +131,34 @@ const CrudRelatedForm = ({
                 <label className="fieldset-label font-semibold md:text-base">
                   User Name
                 </label>
-                <input title="You can't access this field!"
+                <input
                   disabled
+                  readOnly
                   onChange={handleChange}
                   name="userName"
                   value={loading ? "" : userName}
                   type="text"
-                  className={`border px-2 py-2 w-full border-stone-300 focus:outline-none focus:border-stone-400 rounded-none text-xs font-inter cursor-not-allowed
+                  className={`border px-2 py-2 w-full border-stone-300 focus:outline-none focus:border-stone-400 rounded-none text-xs font-inter cursor-not-allowed tooltip tooltip-warning
                   }`}
                   placeholder="User Name"
+                  data-tip="You can't access this field!"
                 />
               </div>
               <div>
                 <label className="fieldset-label font-semibold md:text-base">
                   User Email
                 </label>
-                <input title="You can't access this field!"
+                <input
+                readOnly
                   disabled
                   onChange={handleChange}
                   name="userEmail"
                   value={loading ? "" : userEmail}
                   type="text"
-                  className={`border px-2 py-2 w-full border-stone-300 focus:outline-none focus:border-stone-400 rounded-none text-xs font-inter cursor-not-allowed
+                  className={`border px-2 py-2 w-full border-stone-300 focus:outline-none focus:border-stone-400 rounded-none text-xs font-inter cursor-not-allowed tooltip tooltip-warning
                   }`}
                   placeholder="User Email"
+                  data-tip="You can't access this field!"
                 />
               </div>
               <Button btnText={btnText} fetching={fetching} />
