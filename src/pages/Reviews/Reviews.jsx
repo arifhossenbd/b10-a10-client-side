@@ -3,10 +3,11 @@ import { transition } from "../../config/transition";
 import Button from "../../component/ReusableComponent/Buttons/Button";
 
 const Reviews = ({ reviews }) => {
-  const { _id, coverImg, title, genres, rating, publishingYear } = reviews;
-
+  const { _id, coverImg, title, genres, rating, publishingYear } = reviews; // Destructured review data
   return (
-    <div className={`card bg-base-100 shadow-xl rounded-none ${transition} hover:shadow-2xl font-orbitron`}>
+    <div
+      className={`card bg-base-100 shadow-xl rounded-none ${transition} hover:shadow-2xl font-orbitron`}
+    >
       <figure className="relative h-48 overflow-hidden">
         <img
           src={coverImg}
@@ -18,11 +19,15 @@ const Reviews = ({ reviews }) => {
         <h2 className="card-title md:text-xl font-bold">{title}</h2>
         <p className="text-gray-600">{genres}</p>
         <div className="flex items-center mt-2">
-          <span className="text-yellow-500 font-semibold">Rating: {rating}</span>
+          <span className="text-yellow-500 font-semibold">
+            Rating: {rating}
+          </span>
           <span className="text-gray-400 ml-4">Year: {publishingYear}</span>
         </div>
         <div className="card-actions justify-end mt-4">
-          <Link to={`/review-details/${_id}`}><Button btnText="View Details"/></Link>
+          <Link to={`/review-details/${_id}`}>
+            <Button btnText="View Details" />
+          </Link>
         </div>
       </div>
     </div>

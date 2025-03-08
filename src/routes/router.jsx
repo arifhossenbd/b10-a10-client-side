@@ -8,42 +8,43 @@ import Register from "../pages/Auth/Register";
 import AllReview from "../pages/AllReview/AllReview";
 import ReviewDetails from "../pages/ReviewDetails/ReviewDetails";
 import MyReviews from "../pages/MyReviews/MyReviews";
+
 const router = createBrowserRouter([
-    {
-        path: '/',
-        element: <Main/>,
-        errorElement: <ErrorPage/>,
-        children: [
-            {
-                path: '/',
-                element: <Home/>
-            },
-            {
-                path: '/add-review',
-                element: <AddReview/>
-            },
-            {
-                path: '/all-review',
-                element: <AllReview/>
-            },
-            {
-                path: '/my-reviews',
-                element: <MyReviews/>
-            },
-            {
-                path: '/review-details/:id',
-                element: <ReviewDetails/>,
-            },
-            {
-                path: '/login',
-                element: <Login/>
-            },
-            {
-                path: '/register',
-                element: <Register/>
-            }
-        ]
-    }
+  {
+    path: "/",
+    element: <Main />,
+    errorElement: <ErrorPage />,
+    children: [
+      {
+        path: "/",
+        element: <Home />,
+      },
+      {
+        path: "/add-review",
+        element: <AddReview />,
+      },
+      {
+        path: "/all-review",
+        element: <AllReview />,
+      },
+      {
+        path: "/my-reviews",
+        element: <MyReviews />,
+      },
+      {
+        path: "/review-details/:id",
+        element: <ReviewDetails />,
+      },
+      {
+        path: "/login",
+        element: <Login />,
+      },
+      {
+        path: "/register",
+        element: <Register />,
+      },
+    ],
+  },
 ]);
 
 export default router;

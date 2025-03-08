@@ -7,45 +7,66 @@ import { AuthContext } from "../../provider/AuthProvider/AuthContext";
 import Swal from "sweetalert2";
 
 const Register = () => {
-  const { user, setUser, createUser, updateUser, setLoading, setError, loading } =
-    useContext(AuthContext);
+  // Accessing authentication methods and state from AuthContext
+  const {
+    user,
+    setUser,
+    createUser,
+    updateUser,
+    setLoading,
+    setError,
+    loading,
+  } = useContext(AuthContext);
+
+  // Getting the current location and navigate function from react-router-dom
   const location = useLocation();
   const navigate = useNavigate();
+
+  // Regular expression to validate password strength
   const passwordRegex =
-   /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+    /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+
+  // Function to handle register form submission
   const handleRegister = async (e) => {
-    e.preventDefault();
-    setLoading(true);
+    e.preventDefault(); // Prevent default form submission behavior
+    setLoading(true); // Set loading state to true during registration process
+
     const form = e.target;
     const name = form.name.value;
     const email = form.email.value;
     const password = form.password.value;
     const photo = form.photo.value;
+
+    // Check if the user is already registered
     if (user?.displayName === form.name.value || user?.email === email) {
       Swal.fire({
         icon: "error",
         title: `${user?.displayName || "Dear User"}`,
         text: "An account already exists with a different sign-in method.",
       });
-      setError("You are already registered");
-      setLoading(false);
-      return;
+      setLoading(false); // Reset loading state
+      return; // Exit the function
     }
+
+    // Validate password strength using regex
     if (!passwordRegex?.test(password)) {
       setError(
         "Password must contain at least 8 characters, including at least one uppercase letter, one lowercase letter, one digit, and one special character."
       );
-      setLoading(false);
-      return;
+      setLoading(false); // Reset loading state
+      return; // Exit the function
     } else {
-     setError("");
+      setError(""); // Clear error message if password is valid
     }
 
     try {
+
+      // Create a new user using the AuthContext createUser method
       const result = await createUser(email, password);
       const newUser = result?.user;
-      setUser(newUser);
+      setUser(newUser); // Update the user state
 
+        // If user creation is successful, update the user's profile with name and photo
       if (newUser) {
         await updateUser({ displayName: name, photoURL: photo });
         Swal.fire({
@@ -53,18 +74,19 @@ const Register = () => {
           title: `Congratulations, ${user?.displayName || "Dear User"}`,
           text: "You have successfully registered!",
         });
+        // Navigate to the previous location or the home page
         navigate(location.state?.from?.pathname || "/", { replace: true });
       }
     } catch (error) {
+       // Handle registration errors
       Swal.fire({
         icon: "error",
         title: "Registration Failed",
         text: error?.message || "Something went wrong. Please try again later.",
       });
-      setLoading(false);
-      setError(error?.message || "Registration failed");
+      setLoading(false); // Reset loading state
     } finally {
-      setLoading(false);
+      setLoading(false); // Reset loading state after registration attempt
     }
   };
 

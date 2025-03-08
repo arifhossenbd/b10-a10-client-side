@@ -11,21 +11,35 @@ import { AuthContext } from "../../../provider/AuthProvider/AuthContext";
 import Button from "../Buttons/Button";
 
 const AuthForm = ({ children, name, photo, btnText, handleSubmit, loading }) => {
+
+  // Accessing authentication methods and state from AuthContext
   const { user, error, loginWithGoogle, loginWithFacebook, loginWithGithub } =
     useContext(AuthContext);
+
+    // State to manage password visibility
   const [showPassword, setShowPassword] = useState(false);
+  // State to store the password value
   const [passwordValue, setPasswordValue] = useState("");
+
+  // Regular expression to validate password strength
   const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+
+  // Check if the password matched the regex criteria
   const passwordChecked = passwordRegex.test(passwordValue);
+
+  // Function to handle google login
   const handleLoginWithGoogle = async () => {
     const result = await loginWithGoogle()
     return result;
   }
+
+  // Function to handle facebook login
   const handleLoginWithFacebook = async () => {
     const result = await loginWithFacebook()
     return result;
   }
   
+  // Function to handle github login
   const handleLoginWithGithub = async () => {
     const result = await loginWithGithub()
     return result;

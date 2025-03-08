@@ -6,29 +6,38 @@ import Loading from "../../component/Loading/Loading";
 import NotFound from "../../component/NotFound/NotFound";
 
 const AllReview = () => {
+
+  // State to store the fetched reviews data
   const [data, setData] = useState([]);
+
+  // State to manage loading state during data fetching
   const [loading, setLoading] = useState(false);
+
+  // Effect to fetch reviews data when the component mounts
   useEffect(() => {
+
     const fetchData = async () => {
-      setLoading(true);
+      setLoading(true); // Set loading state to true before fetching dta
       try {
-        const response = await crudOperation("GET", "/reviews");
-        setData(response?.data);
+        const response = await crudOperation("GET", "/reviews"); // Fetch reviews data from the server
+        setData(response?.data);  // Update the state with fetched data
       } catch (error) {
-        console.error("Error fetching reviews", error);
+        console.error("Error fetching reviews", error); // Log error if fetching fails
       } finally {
-        setLoading(false);
+        setLoading(false); // Set loading state to false after fetching
       }
     };
-    fetchData();
-  }, []);
+    fetchData(); // Call the fetch data function
+  }, []); // Empty dependency array ensure this run only once on mount
 
+  // Display loading while data is being fetched
   if(loading){
     return (
       <Loading/>
     );
   };
 
+  // Display "Not available" message if reviews not available
   if (!data || data?.length === 0) {
     return (
       <NotFound text="All review is not available!"/>

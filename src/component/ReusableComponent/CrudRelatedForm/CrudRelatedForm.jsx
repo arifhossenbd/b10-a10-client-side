@@ -1,15 +1,18 @@
+import { useLocation } from "react-router-dom";
 import { transition } from "../../../config/transition";
 import Button from "../Buttons/Button";
 
 const CrudRelatedForm = ({
-  children,
-  btnText,
-  review = {},
-  handleSubmit,
-  handleChange,
-  loading,
-  fetching
+  children, // Optional: Additional elements to be rendered at the top
+  btnText, // Text for the submit button (e.g., "Add Review", "Update Review")
+  review = {}, // Review object containing initial values for form fields
+  handleSubmit, // Function to handle from submission
+  handleChange, // Function to handle input changes
+  loading, // Boolean: Show loading skeleton if true
+  submitLoading, // Boolean: Used for submitLoading loading state if true
+  updateLoading // Boolean: Used for Update Review loading state if true
 }) => {
+  // Destructure review properties (Default values used to prevent errors)
   const {
     coverImg,
     title,
@@ -18,14 +21,28 @@ const CrudRelatedForm = ({
     rating,
     userName,
     userEmail,
-    publishingYear
+    publishingYear,
   } = review;
+
+  // Handle form submission
   const onsubmit = (e) => {
-    e.preventDefault();
-    handleSubmit(review);
+    e.preventDefault(); // Prevent default form submission behavior
+    handleSubmit(review); // Call parent function to submit data
   };
+
+  // Get the current path from the URL
+  const location = useLocation();
+  const presentPath = location?.pathname; // Example: "/my-reviews"
+
   return (
-    <div className="px-4 md:px-0 w-10/12 md:w-8/12 lg:w-6/12 mx-auto my-8 mt-24 lg:mt-20">
+    <div
+      className={`${
+        presentPath === "/my-reviews"
+          ? ``
+          : `px-4  md:px-0 w-10/12 md:w-8/12 lg:w-6/12 mx-auto my-8 mt-24 lg:mt-20`
+      }`}
+    >
+      {/* Show the form if not in the loading state */}
       {!loading ? (
         <div className="shadow-xl">
           <div className="text-center">{children}</div>
@@ -34,6 +51,7 @@ const CrudRelatedForm = ({
               onSubmit={onsubmit}
               className={`fieldset ${transition} font-orbitron`}
             >
+              {/* Cover Image URL Input */}
               <div>
                 <label className="fieldset-label font-semibold md:text-base">
                   Cover Image
@@ -48,6 +66,8 @@ const CrudRelatedForm = ({
                   required
                 />
               </div>
+
+              {/* Title Input */}
               <div>
                 <label className="fieldset-label font-semibold md:text-base">
                   Title
@@ -62,6 +82,8 @@ const CrudRelatedForm = ({
                   required
                 />
               </div>
+
+              {/* Genres Selecting Dropdown */}
               <select
                 name="genres"
                 value={genres || ""}
@@ -83,8 +105,12 @@ const CrudRelatedForm = ({
                 <option value="Action, Survival">Action, Survival</option>
                 <option value="Adventure, Horror">Adventure, Horror</option>
                 <option value="FPS, Multiplayer">FPS, Multiplayer</option>
-                <option value="Horror, Puzzle-Platformer">Horror, Puzzle-Platformer</option>
+                <option value="Horror, Puzzle-Platformer">
+                  Horror, Puzzle-Platformer
+                </option>
               </select>
+
+              {/* Review Description */}
               <div>
                 <label className="fieldset-label font-semibold md:text-base">
                   Review
@@ -99,6 +125,8 @@ const CrudRelatedForm = ({
                   required
                 />
               </div>
+
+              {/*  Rating Input */}
               <div>
                 <label className="fieldset-label font-semibold md:text-base">
                   Rating
@@ -113,6 +141,8 @@ const CrudRelatedForm = ({
                   required
                 />
               </div>
+
+              {/* Publishing Year Input */}
               <div>
                 <label className="fieldset-label font-semibold md:text-base">
                   Publishing Year
@@ -127,56 +157,51 @@ const CrudRelatedForm = ({
                   required
                 />
               </div>
-              <div>
-                <label className="fieldset-label font-semibold md:text-base">
-                  User Name
-                </label>
-                <input
-                  disabled
-                  readOnly
-                  onChange={handleChange}
-                  name="userName"
-                  value={loading ? "" : userName}
-                  type="text"
-                  className={`border px-2 py-2 w-full border-stone-300 focus:outline-none focus:border-stone-400 rounded-none text-xs font-inter cursor-not-allowed tooltip tooltip-warning
+
+              {/* User information (Read Only) */}
+              <div className="tooltip tooltip-top tooltip-warning space-y-1"
+              data-tip="Default value so not changeable!">
+                <div>
+                  <label className="fieldset-label font-semibold md:text-base">
+                    User Name
+                  </label>
+                  <input
+                    disabled
+                    readOnly
+                    value={loading ? "" : userName}
+                    type="text"
+                    className={`border px-2 py-2 w-full border-stone-300 focus:outline-none focus:border-stone-400 rounded-none text-xs font-inter
                   }`}
-                  placeholder="User Name"
-                  data-tip="You can't access this field!"
-                />
-              </div>
-              <div>
-                <label className="fieldset-label font-semibold md:text-base">
-                  User Email
-                </label>
-                <input
-                readOnly
-                  disabled
-                  onChange={handleChange}
-                  name="userEmail"
-                  value={loading ? "" : userEmail}
-                  type="text"
-                  className={`border px-2 py-2 w-full border-stone-300 focus:outline-none focus:border-stone-400 rounded-none text-xs font-inter cursor-not-allowed tooltip tooltip-warning
+                    placeholder="User Name"
+                  />
+                </div>
+                <div>
+                  <label className="fieldset-label font-semibold md:text-base">
+                    User Email
+                  </label>
+                  <input
+                    readOnly
+                    disabled
+                    value={loading ? "" : userEmail}
+                    type="text"
+                    className={`border px-2 py-2 w-full border-stone-300 focus:outline-none focus:border-stone-400 rounded-none text-xs font-inter
                   }`}
-                  placeholder="User Email"
-                  data-tip="You can't access this field!"
-                />
+                    placeholder="User Email"
+                  />
+                </div>
               </div>
-              <Button btnText={btnText} fetching={fetching} />
+              <Button btnText={btnText} submitLoading={submitLoading || updateLoading} />
             </form>
           </div>
         </div>
       ) : (
+
+        // Show loading skeleton while user 
         <div className="flex flex-col gap-4">
           <div className="skeleton h-32 w-full"></div>
-          <div className="skeleton h-4 w-full"></div>
-          <div className="skeleton h-4 w-full"></div>
-          <div className="skeleton h-4 w-full"></div>
-          <div className="skeleton h-4 w-full"></div>
-          <div className="skeleton h-4 w-full"></div>
-          <div className="skeleton h-4 w-full"></div>
-          <div className="skeleton h-4 w-full"></div>
-          <div className="skeleton h-4 w-full"></div>
-          <div className="skeleton h-4 w-full"></div>
+          {[...Array(10)].map((_, i) => (
+            <div key={i} className="skeleton h-4 w-full"></div>
+          ))}
         </div>
       )}
     </div>

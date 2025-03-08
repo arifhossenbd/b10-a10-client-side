@@ -1,11 +1,9 @@
-import BackToHomeButton from "../ReusableComponent/Buttons/BackToHomeButton";
-
 const Loading = () => {
   return (
-    <div className="flex flex-col gap-2 md:gap-3 items-center h-screen justify-center">
+    <div className="flex flex-col items-center h-screen justify-center text-center">
       <div className="flex items-center gap-2">
         <img src="/logo.png" className="md:h-12 md:w-12 h-10 w-10" alt="Logo" />
-        <p className="text-2xl md:text-3xl font-semibold font-orbitron">
+        <p className="text-2xl md:text-3xl font-bold md:font-extrabold font-orbitron">
           Chill Gamer
         </p>
       </div>

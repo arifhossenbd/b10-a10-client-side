@@ -8,24 +8,29 @@ import Swal from "sweetalert2";
 import BackToHomeButton from "../../component/ReusableComponent/Buttons/BackToHomeButton";
 
 const ReviewDetails = () => {
-  const paramsId = useParams();
-  const [data, setData] = useState([]);
-  const [loading, setLoading] = useState(false);
-  const { user } = useContext(AuthContext);
+  const paramsId = useParams(); // Get the review ID from the URL parameter
+  const [data, setData] = useState([]); // State to hold review data
+  const [loading, setLoading] = useState(false); // State to track loading state
+  const { user } = useContext(AuthContext); // Access user authentication data
+
+  // Fetch review details when the component mounts or the review ID changes
   useEffect(() => {
     const fetchData = async () => {
-      setLoading(true);
+      setLoading(true); // Set loading state to true during data fetching
       try {
+        // Fetch review details using the review ID from the URL
         const response = await crudOperation("GET", `/review/${paramsId}`);
-        setData(response?.data);
+        setData(response?.data); // Update the state with fetched data
       } catch (error) {
-        console.error("Error fetching reviews", error);
+        console.error("Error fetching reviews", error); // Log error if fetching fails
       } finally {
-        setLoading(false);
+        setLoading(false); // Reset loading state after fetching
       }
     };
-    fetchData();
+    fetchData(); // Call the fetchData function
   }, [paramsId]);
+
+  // Destructure review data for easier access
   const {
     _id,
     coverImg,
@@ -38,6 +43,7 @@ const ReviewDetails = () => {
     userEmail,
   } = data;
 
+  // Show loading while fetching data
   if (loading) {
     return (
       <div className="flex items-center h-screen justify-center">
@@ -46,28 +52,23 @@ const ReviewDetails = () => {
     );
   }
 
+  // Show message if review is not available
   if (!data) {
     return (
       <div className="flex items-center h-screen justify-center font-orbitron">
         <span className="text-xl md:text-2xl font-semibold text-gray-600">
           {" "}
-          No review found.
+          Review is not available.
         </span>{" "}
-        <BackToHomeButton/>
+        <BackToHomeButton />
       </div>
     );
   }
 
+  // Function to add review to WatchList
   const handleAddToWatchList = async () => {
-    if (!user) {
-      Swal.fire({
-        icon: "warning",
-        title: "Login Required",
-        text: "You need to log in to add this review to your watchlist.",
-      });
-      return;
-    }
     try {
+      // Prepare data to be added to the WatchList
       const watchListData = {
         reviewId: data?._id,
         coverImg: data?.coverImg,
@@ -79,14 +80,18 @@ const ReviewDetails = () => {
         userName: user?.displayName,
         userEmail: user?.email,
       };
+      // Send a POST request to add the review to the WatchList
       await crudOperation("POST", "/watchList", watchListData);
+      // Show success notification
       Swal.fire({
         icon: "success",
         title: "Added to WatchList",
         text: "This review has been added to your WatchList.",
       });
     } catch (error) {
-      console.error("Error adding to watchList:", error);
+      console.error("Error adding to watchList:", error); // Log error if the operation fails
+
+      // Show error notification
       Swal.fire({
         icon: "error",
         title: "Error",
@@ -94,6 +99,10 @@ const ReviewDetails = () => {
       });
     }
   };
+
+  // condition to check if the logged in user is the owner of the review
+  const canWatchDetails =
+    user?.displayName === userName || user?.email === userEmail;
   return (
     <div className="h-screen">
       <div className="px-4 md:px-0 md:w-11/12 mx-auto mt-24">
@@ -126,8 +135,17 @@ const ReviewDetails = () => {
               </p>
             </div>
             {user && (
-              <div onClick={handleAddToWatchList} className="card-actions justify-end mt-4">
-                <Button btnText="Add to WatchList" />
+              <div
+                data-tip="You can't add to WatchList"
+                onClick={!canWatchDetails && handleAddToWatchList}
+                className={`card-actions justify-end mt-4 ${
+                  canWatchDetails && `tooltip tooltip-info cursor-not-allowed`
+                }`}
+              >
+                <Button
+                  btnText="Add to WatchList"
+                  canWatchDetails={canWatchDetails}
+                />
               </div>
             )}
           </div>
