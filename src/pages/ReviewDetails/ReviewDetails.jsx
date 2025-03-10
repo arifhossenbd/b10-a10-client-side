@@ -132,14 +132,14 @@ console.log(_id, "paramsId.id:", paramsId.id)
             {user && (
               <div className="card-actions justify-end mt-4">
                 <div
-                  data-tip="You can't add to WatchList"
+                  data-tip="You can't add to Watch List"
                   onClick={!canAddToWatchList ? handleAddToWatchList : undefined}
                   className={`w-fit ${
                     canAddToWatchList && `tooltip tooltip-info cursor-not-allowed`
                   }`}
                 >
                   <Button
-                    btnText="Add to WatchList"
+                    btnText="Add to Watch List"
                     canAddToWatchList={canAddToWatchList}
                   />
                 </div>

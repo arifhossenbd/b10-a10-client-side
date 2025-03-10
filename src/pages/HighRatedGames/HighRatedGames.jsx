@@ -3,11 +3,11 @@ import crudOperation from "../../utils/apiClient";
 import { transition } from "../../config/transition";
 import Button from "../../component/ReusableComponent/Buttons/Button";
 import { Link } from "react-router-dom";
-import { FaCalendarAlt, FaUser } from "react-icons/fa";
+import { FaCalendarAlt, FaStar, FaUser } from "react-icons/fa";
 
 const HighRatedGames = () => {
   const [data, setData] = useState([]);
-  
+  console.log(data);
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -21,13 +21,13 @@ const HighRatedGames = () => {
   }, []);
 
   const formateDate = (timeStamp) => {
-    if(!timeStamp) return "Invalid Date";
-  const date = new Date(Number(timeStamp));
-  return date.toLocaleString("en-US", {
-    month: "long",
-    day: "numeric",
-    year: "numeric"
-  });
+    if (!timeStamp) return "Invalid Date";
+    const date = new Date(Number(timeStamp));
+    return date.toLocaleString("en-US", {
+      month: "long",
+      day: "numeric",
+      year: "numeric",
+    });
   };
 
   return (
@@ -38,7 +38,8 @@ const HighRatedGames = () => {
       </h2>
       <div className={`${transition} mt-5`}>
         {data?.map((review) => (
-          <div key={review?._id}
+          <div
+            key={review?._id}
             className={`${transition} flex flex-col md:flex-row justify-between items-center gap-2 font-orbitron my-5 shadow`}
           >
             <figure className="lg:w-10/12 lg:h-56 mx-auto">
@@ -66,14 +67,23 @@ const HighRatedGames = () => {
                 <p className={`${transition} flex item-center gap-1`}>
                   <span className="text-red-600 flex items-center gap-1">
                     <FaUser />
-                  </span> by {""}
+                  </span>{" "}
+                  by {""}
                   {review?.reviewerName}
+                </p>
+                <p className={`${transition} flex item-center gap-1`}>
+                  <span className="text-red-600">
+                    <FaStar />
+                  </span>{" "}
+                  {review?.rating}
                 </p>
               </div>
               <h2 className="text-wrap text-2xl font-semibold md:font-bold">
-               {review?.title}
+                {review?.title}
               </h2>
-              <Link to={`/review-details/${review?._id}`}><Button btnText="View Details" /></Link>
+              <Link to={`/review-details/${review?._id}`}>
+                <Button btnText="View Details" />
+              </Link>
             </div>
           </div>
         ))}
