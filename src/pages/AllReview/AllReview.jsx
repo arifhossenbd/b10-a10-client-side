@@ -1,58 +1,46 @@
-import { useEffect, useState } from "react";
-import crudOperation from "../../utils/apiClient";
 import Reviews from "../Reviews/Reviews";
 import { transition } from "../../config/transition";
 import Loading from "../../component/Loading/Loading";
 import NotFound from "../../component/NotFound/NotFound";
+import GetAPI from "../../utils/GetAPI";
+import Sidebar from "../../component/Sidebar/Sidebar";
 
 const AllReview = () => {
-
-  // State to store the fetched reviews data
-  const [data, setData] = useState([]);
-
-  // State to manage loading state during data fetching
-  const [loading, setLoading] = useState(false);
-
-  // Effect to fetch reviews data when the component mounts
-  useEffect(() => {
-
-    const fetchData = async () => {
-      setLoading(true); // Set loading state to true before fetching dta
-      try {
-        const response = await crudOperation("GET", "/reviews"); // Fetch reviews data from the server
-        setData(response);  // Update the state with fetched data
-      } catch (error) {
-        console.error("Error fetching reviews", error); // Log error if fetching fails
-      } finally {
-        setLoading(false); // Set loading state to false after fetching
-      }
-    };
-    fetchData(); // Call the fetch data function
-  }, []); // Empty dependency array ensure this run only once on mount
-
+  const { loading, data } = GetAPI("/reviews");
   // Display loading while data is being fetched
-  if(loading){
-    return (
-      <Loading/>
-    );
-  };
+  if (loading) {
+    return <Loading />;
+  }
 
   // Display "Not available" message if reviews not available
   if (!data || data?.length === 0) {
     return (
-      <NotFound message="All review is not available!" text="home" path=""/>
+      <NotFound message="All review is not available!" text="home" path="" />
     );
   }
-  
+
   return (
-    <div className="h-screen">
-      <div className="px-4 md:px-0 md:w-11/12 mx-auto mt-24">
-          <div className={`grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2 md:gap-3 items-center ${transition}`}>
+    <div>
+      <div
+        className={`px-4 md:px-0 md:w-11/12 mx-auto mt-24 flex flex-col-reverse lg:flex-row gap-4 md:gap-5 ${transition}`}
+      >
+        <div>
+          <h2 className="bg-red-600 py-2 px-4 text-white font-orbitron text-xl font-semibold md:font-bold relative">
+            All Games
+            <span className="w-0 h-0 border-l-10 border-r-10 border-t-10 border-l-transparent border-r-transparent border-red-600 absolute -bottom-2 left-6 -translate-x-1/2"></span>
+          </h2>
+          <div
+            className={`grid grid-cols-1 md:grid-cols-2 gap-2 md:gap-3 items-center mt-5 ${transition}`}
+          >
             {data?.map((reviews) => (
               <Reviews key={reviews?._id} reviews={reviews} />
             ))}
           </div>
         </div>
+        <div>
+          <Sidebar />
+        </div>
+      </div>
     </div>
   );
 };
