@@ -13,8 +13,8 @@ const initialReview = {
   reviewDescription: "",
   rating: "",
   publishingYear: "",
-  userName: "",
-  userEmail: "",
+  reviewerName: "",
+  reviewerEmail: "",
   timeStamp: "",
 };
 const AddReview = () => {
@@ -32,8 +32,8 @@ const AddReview = () => {
     if (user) {
       setReview((prevReview) => ({
         ...prevReview,
-        userName: user?.displayName || "User not found!", // Set userName
-        userEmail: user?.email || "Email not found!", // Set userEmail
+        reviewerName: user?.displayName || "User not found!", // Set reviewerName
+        reviewerEmail: user?.email || "Email not found!", // Set reviewerEmail
         timeStamp: user?.metadata?.lastLoginAt || "Time not found!", // Set TimeStamp
       }));
     }
@@ -50,6 +50,11 @@ const AddReview = () => {
 
   // Function to handle form submission
   const handleSubmit = async (finalReview) => {
+    if(!finalReview.reviewerEmail){
+      Swal.fire("Warning", "Please email provide", "warning")
+      return;
+    }
+    console.log(user?.email, finalReview?.reviewerEmail)
     setSubmitLoading(true); // Set setSubmitLoading state to true during API call
     try {
       // Send a POST request to add the review
@@ -64,9 +69,11 @@ const AddReview = () => {
       // Reset the form fields after successfully submission
       setReview((prevReview) => ({
         ...initialReview,
-        userName: prevReview.userName, // Retain userName
-        userEmail: prevReview.userEmail, // Retain userEmail
+        reviewerName: prevReview.reviewerName, // Retain reviewerName
+        reviewerEmail: prevReview.reviewerEmail, // Retain reviewerEmail
       }));
+
+      setReview(initialReview)
     } catch (error) {
       // Show error notification if submission fail
       Swal.fire({

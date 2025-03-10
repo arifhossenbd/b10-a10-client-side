@@ -1,6 +1,6 @@
 const Loading = () => {
   return (
-    <div className="flex flex-col items-center h-screen justify-center text-center">
+    <div className="flex flex-col items-center h-screen justify-center text-center  bg-[url(/assets/1.jpg)] absolute top-0 left-0 right-0">
       <div className="flex items-center gap-2">
         <img src="/logo.png" className="md:h-12 md:w-12 h-10 w-10" alt="Logo" />
         <p className="text-2xl md:text-3xl font-bold md:font-extrabold font-orbitron">

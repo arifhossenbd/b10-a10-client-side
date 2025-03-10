@@ -19,8 +19,8 @@ const CrudRelatedForm = ({
     genres,
     reviewDescription,
     rating,
-    userName,
-    userEmail,
+    reviewerName,
+    reviewerEmail,
     publishingYear,
   } = review;
 
@@ -37,7 +37,7 @@ const CrudRelatedForm = ({
   return (
     <div
       className={`${
-        presentPath === "/my-reviews"
+        presentPath === "/my-reviews" || presentPath === "/my-watch-list"
           ? ``
           : `px-4  md:px-0 w-10/12 md:w-8/12 lg:w-6/12 mx-auto my-8 mt-24 lg:mt-20`
       }`}
@@ -49,7 +49,7 @@ const CrudRelatedForm = ({
           <div className="p-4">
             <form
               onSubmit={onsubmit}
-              className={`fieldset ${transition} font-orbitron`}
+              className={`fieldset ${transition} w-full font-orbitron`}
             >
               {/* Cover Image URL Input */}
               <div>
@@ -168,7 +168,7 @@ const CrudRelatedForm = ({
                   <input
                     disabled
                     readOnly
-                    value={loading ? "" : userName}
+                    value={loading ? "" : reviewerName}
                     type="text"
                     className={`border px-2 py-2 w-full border-stone-300 focus:outline-none focus:border-stone-400 rounded-none text-xs font-inter
                   }`}
@@ -182,7 +182,7 @@ const CrudRelatedForm = ({
                   <input
                     readOnly
                     disabled
-                    value={loading ? "" : userEmail}
+                    value={loading ? "" : reviewerEmail}
                     type="text"
                     className={`border px-2 py-2 w-full border-stone-300 focus:outline-none focus:border-stone-400 rounded-none text-xs font-inter
                   }`}

@@ -1,11 +1,11 @@
 import { FaArrowRight } from "react-icons/fa";
 import { transition } from "../../../config/transition";
 
-const Button = ({ btnText, canWatchDetails, loading, submitLoading }) => {
+const Button = ({ btnText, canAddToWatchList, loading, submitLoading }) => {
   return (
     <button
-    disabled={loading || submitLoading || canWatchDetails}
-      className={`${loading || submitLoading || canWatchDetails ? `cursor-not-allowed mt-4 rounded-none btn bg-transparent` : `font-orbitron group flex items-center gap-1 btn bg-transparent border-red-600 text-red-600 hover:text-white hover:bg-red-600 mt-4 rounded-none ${transition}`}`}
+    disabled={loading || submitLoading || canAddToWatchList}
+      className={`${loading || submitLoading || canAddToWatchList ? `cursor-not-allowed mt-4 p-2 font-semibold` : `font-orbitron group flex justify-center items-center gap-1 border-2 p-2 px-4 border-red-600 text-red-600 hover:text-white hover:bg-red-600 mt-4 font-semibold ${transition}`}`}
     >
       {loading || submitLoading ? (
         <span className="loading loading-dots loading-xl"></span>

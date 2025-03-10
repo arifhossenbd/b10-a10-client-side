@@ -20,7 +20,7 @@ const AllReview = () => {
       setLoading(true); // Set loading state to true before fetching dta
       try {
         const response = await crudOperation("GET", "/reviews"); // Fetch reviews data from the server
-        setData(response?.data);  // Update the state with fetched data
+        setData(response);  // Update the state with fetched data
       } catch (error) {
         console.error("Error fetching reviews", error); // Log error if fetching fails
       } finally {
@@ -40,7 +40,7 @@ const AllReview = () => {
   // Display "Not available" message if reviews not available
   if (!data || data?.length === 0) {
     return (
-      <NotFound text="All review is not available!"/>
+      <NotFound message="All review is not available!" text="home" path=""/>
     );
   }
   
