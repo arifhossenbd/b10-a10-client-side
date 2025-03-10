@@ -59,7 +59,7 @@ const ReviewDetails = () => {
       />
     );
   }
-console.log(_id, "paramsId.id:", paramsId.id)
+  
   // Function to add review to WatchList
   const handleAddToWatchList = async () => {
     try {

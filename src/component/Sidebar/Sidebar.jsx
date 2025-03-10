@@ -1,16 +1,13 @@
 import { useState } from "react";
 import { transition } from "../../config/transition";
 import GetAPI from "../../utils/GetAPI";
-import { FaCalendarAlt } from "react-icons/fa";
+import { FaCalendarAlt, FaEye } from "react-icons/fa";
+import { Link } from "react-router-dom";
 
 const Sidebar = () => {
   const [activeTab, setActiveTab] = useState("recent");
-  const activeTriangle = (
-    <span className="w-0 h-0 border-l-10 border-r-10 border-t-10 border-l-transparent border-r-transparent border-red-600 absolute -bottom-2 left-1/2 -translate-x-1/2"></span>
-  );
   const { data: recent } = GetAPI("/latestReviews");
-  // const {data:popular} = GetAPI("/popularGames");
-  // console.log(popular)
+  const { data: popular } = GetAPI("/popularReviews");
 
   const formateDate = (timeStamp) => {
     if (!timeStamp) return "Invalid Date";
@@ -21,9 +18,13 @@ const Sidebar = () => {
       year: "numeric",
     });
   };
+  const activeTriangle = (
+    <span className="w-0 h-0 border-l-10 border-r-10 border-t-10 border-l-transparent border-r-transparent border-red-600 absolute -bottom-2 left-1/2 -translate-x-1/2"></span>
+  );
+
   return (
-    <div className="w-full">
-      <div className={`${transition} flex`}>
+    <div className={`${transition}`}>
+      <div className={`${transition} flex w-full`}>
         <button
           onClick={() => setActiveTab("recent")}
           className={`cursor-pointer ${
@@ -50,15 +51,15 @@ const Sidebar = () => {
         {activeTab === "recent" ? (
           <div className="space-y-3 md:space-y-5">
             {recent?.map((recentData) => (
-              <div>
-                <div
-                  key={recentData?._id}
+              <div key={recentData?._id}>
+                <Link
+                  to={`/review-details/${recentData?._id}`}
                   className={`${transition} flex flex-row justify-between items-center font-orbitron`}
                 >
                   <figure className="h-full w-60  mx-auto">
                     <img
                       src={recentData?.coverImg}
-                      className={`w-full h-full object-center hover:scale-110 cursor-pointer ${transition}`}
+                      className={`w-full h-full object-center hover:scale-110 ${transition}`}
                       alt={recentData?.title}
                     />
                   </figure>
@@ -75,13 +76,48 @@ const Sidebar = () => {
                       {recentData?.title}
                     </h2>
                   </div>
-                </div>
+                </Link>
                 <hr className="h-1 w-full mt-3 md:mt-5 text-stone-200" />
               </div>
             ))}
           </div>
         ) : (
-          <div></div>
+          <div className="space-y-3 md:space-y-5">
+            {popular?.map((popularData) => (
+              <div key={popularData?._id}>
+                <Link
+                  to={`/review-details/${popularData?._id}`}
+                  className={`${transition} flex flex-row justify-between items-center font-orbitron`}
+                >
+                  <figure className="h-full w-60  mx-auto">
+                    <img
+                      src={popularData?.coverImg}
+                      className={`w-full h-full object-center hover:scale-110 ${transition}`}
+                      alt={popularData?.title}
+                    />
+                  </figure>
+                  <div
+                    className={`${transition} flex flex-col gap-2 md:gap-3 w-full p-4`}
+                  >
+                    <p className={`${transition} flex item-center gap-1`}>
+                      <span className="text-red-600">
+                        <FaCalendarAlt />
+                      </span>{" "}
+                      {formateDate(popularData?.timeStamp)}
+                    </p>
+                    <h2 className="text-wrap font-semibold">
+                      {popularData?.title}
+                    </h2>
+                    <p className="text-gray-500 font-semibold flex items-center gap-1">
+                      <FaEye className="text-xl md:text-2xl" />{" "}
+                      {popularData?.clickCount}
+                    </p>
+                  </div>
+                </Link>
+                <hr className="h-1 w-full mt-3 md:mt-5 text-stone-200" />
+              </div>
+            ))}
+          </div>
         )}
       </div>
     </div>

@@ -22,7 +22,6 @@ const MyReviewAndWatchListFunction = ({ endpoint, endpointEmail, message, text, 
   const [selectedReview, setSelectedReview] = useState();
   //Getting the logged in user from AuthContext
   const { user } = useContext(AuthContext);
-  console.log(data)
   // Fetch reviews data when the component mount or the user changes
   useEffect(() => {
     const fetchData = async () => {
@@ -135,7 +134,14 @@ const MyReviewAndWatchListFunction = ({ endpoint, endpointEmail, message, text, 
     }));
   };
 
-  // const checkedUser = data?.find(item => item?.reviewerEmail === user?.email);
+  const handleDetailsClick = async (id) => {
+    try {
+      // Send a PUT request to increment the click count
+      await crudOperation("PUT", `/incrementClickCount/${id}`);
+    } catch (error) {
+      console.error("Error incrementing click count:", error);
+    }
+  };
   return (
     <div>
       <div className="px-4 md:px-0 md:w-11/12 mx-auto mt-24">
@@ -184,7 +190,7 @@ const MyReviewAndWatchListFunction = ({ endpoint, endpointEmail, message, text, 
                     </td>
                     <td>{review?.reviewDescription}</td>
                     <th>
-                      <Link to={`/review-details/${review?.watchId || review?._id}`}>
+                      <Link onClick={() => handleDetailsClick(review?._id)} to={`/review-details/${review?.watchId || review?._id}`}>
                         <button
                           className="btn btn-ghost hover:text-cyan-500 tooltip tooltip-info"
                           data-tip="Details"

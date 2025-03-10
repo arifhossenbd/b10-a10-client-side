@@ -7,7 +7,6 @@ import { FaCalendarAlt, FaStar, FaUser } from "react-icons/fa";
 
 const HighRatedGames = () => {
   const [data, setData] = useState([]);
-  console.log(data);
   useEffect(() => {
     const fetchData = async () => {
       try {
