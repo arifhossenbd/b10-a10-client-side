@@ -84,11 +84,11 @@ const Banner = () => {
               <div className="hero-overlay"></div>
               <div className="hero-content text-neutral-content md:mt-24 text-left px-16 md:px-24 lg:px-32 w-full flex justify-start font-orbitron">
                 <div className="max-w-lg">
-                  <h1 className="mb-2 md:mb-4 text-2xl md:text-3xl lg:text-4xl font-bold">
+                  <h1 className="mb-2 md:mb-4 text-xl md:text-2xl lg:text-3xl font-bold">
                     {review?.title}
                   </h1>
                   <h2
-                    className={`${transition} bg-green-500 p-2 px-4 text-white font-semibold w-fit mb-4`}
+                    className={`${transition} bg-green-500 p-1 px-2 md:p-2 text-sm md:px-4 text-white font-semibold w-fit mb-2 md:mb-4`}
                   >
                     {review?.genres}
                   </h2>

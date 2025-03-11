@@ -7,6 +7,7 @@ import { AuthContext } from "../../provider/AuthProvider/AuthContext";
 import Swal from "sweetalert2";
 import Loading from "../../component/Loading/Loading";
 import NotFound from "../../component/NotFound/NotFound";
+import Sidebar from "../../component/Sidebar/Sidebar";
 
 const ReviewDetails = () => {
   const paramsId = useParams(); // Get the review ID from the URL parameter
@@ -59,7 +60,7 @@ const ReviewDetails = () => {
       />
     );
   }
-  
+
   // Function to add review to WatchList
   const handleAddToWatchList = async () => {
     try {
@@ -74,7 +75,7 @@ const ReviewDetails = () => {
         reviewDescription: data?.reviewDescription,
         visitor: user?.email,
       };
-      console.log(watchListData)
+      console.log(watchListData);
       // Send a POST request to add the review to the WatchList
       await crudOperation("POST", "/watchList", watchListData);
       // Show success notification
@@ -98,55 +99,55 @@ const ReviewDetails = () => {
   // condition to check if the logged in user is the owner of the review
   const canAddToWatchList = user?.email === reviewerEmail;
   return (
-    <div className="h-screen">
-      <div className="px-4 md:px-0 md:w-11/12 mx-auto mt-24">
-        <div
-          className={`card bg-base-100 shadow-xl rounded-none ${transition} hover:shadow-2xl font-orbitron`}
-        >
-          <figure className="relative h-48 overflow-hidden">
-            <img
-              src={coverImg}
-              alt={title}
-              className="w-full h-full object-cover"
-            />
-          </figure>
-          <div className={`card-body p-4 ${transition}`}>
-            <h2 className="card-title text-xl font-bold">{title}</h2>
-            <p className="text-gray-600">{genres}</p>
-            <div className="flex items-center mt-2">
-              <span className="text-yellow-500 font-semibold">
-                Rating: {rating}
-              </span>
-              <span className="text-gray-400 ml-4">Year: {publishingYear}</span>
-            </div>
-            <p className="text-sm font-inter">{reviewDescription}</p>
-            <div className="text-gray-600 mt-4 space-y-0.5 md:space-y-1">
-              <p>
-                Reviewed by:{" "}
-                <span className="font-semibold">{reviewerName}</span>
-              </p>
-              <p>
-                Email: <span className="font-semibold">{reviewerEmail}</span>
-              </p>
-            </div>
-            {user && (
-              <div className="card-actions justify-end mt-4">
-                <div
-                  data-tip="You can't add to Watch List"
-                  onClick={!canAddToWatchList ? handleAddToWatchList : undefined}
-                  className={`w-fit ${
-                    canAddToWatchList && `tooltip tooltip-info cursor-not-allowed`
-                  }`}
-                >
-                  <Button
-                    btnText="Add to Watch List"
-                    canAddToWatchList={canAddToWatchList}
-                  />
-                </div>
-              </div>
-            )}
+    <div className="px-4 md:px-0 md:w-11/12 mx-auto mt-24 mb-12 flex flex-col md:flex-row justify-between gap-4 md:gap-5">
+      <div
+        className={`card bg-base-100 shadow-xl rounded-none ${transition} hover:shadow-2xl font-orbitron w-full`}
+      >
+        <figure className="relative overflow-hidden">
+          <img
+            src={coverImg}
+            alt={title}
+            className="w-full h-full object-cover"
+          />
+        </figure>
+        <div className={`card-body p-4 ${transition}`}>
+          <h2 className="card-title text-xl font-bold">{title}</h2>
+          <p className="text-gray-600">{genres}</p>
+          <div className="flex items-center mt-2">
+            <span className="text-yellow-500 font-semibold">
+              Rating: {rating}
+            </span>
+            <span className="text-gray-400 ml-4">Year: {publishingYear}</span>
           </div>
+          <p className="text-sm font-inter">{reviewDescription}</p>
+          <div className="text-gray-600 mt-4 space-y-0.5 md:space-y-1">
+            <p>
+              Reviewed by: <span className="font-semibold">{reviewerName}</span>
+            </p>
+            <p>
+              Email: <span className="font-semibold">{reviewerEmail}</span>
+            </p>
+          </div>
+          {user && (
+            <div className="card-actions justify-end mt-4">
+              <div
+                data-tip="You can't add to Watch List"
+                onClick={!canAddToWatchList ? handleAddToWatchList : undefined}
+                className={`w-fit ${
+                  canAddToWatchList && `tooltip tooltip-info cursor-not-allowed`
+                }`}
+              >
+                <Button
+                  btnText="Add to Watch List"
+                  canAddToWatchList={canAddToWatchList}
+                />
+              </div>
+            </div>
+          )}
         </div>
+      </div>
+      <div>
+        <Sidebar/>
       </div>
     </div>
   );

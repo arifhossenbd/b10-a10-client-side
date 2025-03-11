@@ -10,7 +10,7 @@ const CrudRelatedForm = ({
   handleChange, // Function to handle input changes
   loading, // Boolean: Show loading skeleton if true
   submitLoading, // Boolean: Used for submitLoading loading state if true
-  updateLoading // Boolean: Used for Update Review loading state if true
+  updateLoading, // Boolean: Used for Update Review loading state if true
 }) => {
   // Destructure review properties (Default values used to prevent errors)
   const {
@@ -159,8 +159,10 @@ const CrudRelatedForm = ({
               </div>
 
               {/* User information (Read Only) */}
-              <div className="tooltip tooltip-top tooltip-warning space-y-1"
-              data-tip="Default value so not changeable!">
+              <div
+                className="tooltip tooltip-top tooltip-warning space-y-1"
+                data-tip="This information is read-only and cannot be changed."
+              >
                 <div>
                   <label className="fieldset-label font-semibold md:text-base">
                     User Name
@@ -171,7 +173,7 @@ const CrudRelatedForm = ({
                     value={loading ? "" : reviewerName}
                     type="text"
                     className={`border px-2 py-2 w-full border-stone-300 focus:outline-none focus:border-stone-400 rounded-none text-xs font-inter
-                  }`}
+                        }`}
                     placeholder="User Name"
                   />
                 </div>
@@ -185,18 +187,20 @@ const CrudRelatedForm = ({
                     value={loading ? "" : reviewerEmail}
                     type="text"
                     className={`border px-2 py-2 w-full border-stone-300 focus:outline-none focus:border-stone-400 rounded-none text-xs font-inter
-                  }`}
+                        }`}
                     placeholder="User Email"
                   />
                 </div>
               </div>
-              <Button btnText={btnText} submitLoading={submitLoading || updateLoading} />
+              <Button
+                btnText={btnText}
+                submitLoading={submitLoading || updateLoading}
+              />
             </form>
           </div>
         </div>
       ) : (
-
-        // Show loading skeleton while user 
+        // Show loading skeleton while user
         <div className="flex flex-col gap-4">
           <div className="skeleton h-32 w-full"></div>
           {[...Array(10)].map((_, i) => (

@@ -52,32 +52,32 @@ const HighRatedGames = () => {
               className={`${transition} flex flex-col gap-2 md:gap-3 w-full p-4`}
             >
               <h2
-                className={`${transition} bg-green-500 p-2 px-4 text-white font-semibold w-fit`}
+                className={`${transition} bg-green-500 p-1 md:p-2 px-2 md:px-4 text-white text-sm font-semibold w-fit`}
               >
                 {review?.genres}
               </h2>
               <div className={`${transition} flex flex-wrap gap-2 md:gap-3`}>
-                <p className={`${transition} flex item-center gap-1`}>
+                <p className={`${transition} flex item-center gap-1 text-sm text-stone-500`}>
                   <span className="text-red-600">
                     <FaCalendarAlt />
                   </span>{" "}
                   {formateDate(review?.timeStamp)}
                 </p>
-                <p className={`${transition} flex item-center gap-1`}>
+                <p className={`${transition} flex item-center gap-1 text-sm text-stone-500`}>
                   <span className="text-red-600 flex items-center gap-1">
                     <FaUser />
                   </span>{" "}
                   by {""}
                   {review?.reviewerName}
                 </p>
-                <p className={`${transition} flex item-center gap-1`}>
+                <p className={`${transition} flex item-center gap-1 text-sm text-stone-500`}>
                   <span className="text-red-600">
                     <FaStar />
                   </span>{" "}
                   {review?.rating}
                 </p>
               </div>
-              <h2 className="text-wrap text-2xl font-semibold md:font-bold">
+              <h2 className="text-wrap text-xl md:text-2xl font-semibold md:font-bold">
                 {review?.title}
               </h2>
               <Link to={`/review-details/${review?._id}`}>

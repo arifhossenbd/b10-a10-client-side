@@ -3,12 +3,17 @@ import { transition } from "../../config/transition";
 import GetAPI from "../../utils/GetAPI";
 import { FaCalendarAlt, FaEye } from "react-icons/fa";
 import { Link } from "react-router-dom";
+import Loading from "../Loading/Loading";
 
 const Sidebar = () => {
   const [activeTab, setActiveTab] = useState("recent");
-  const { data: recent } = GetAPI("/latestReviews");
+  const { data: recent, loading } = GetAPI("/latestReviews");
   const { data: popular } = GetAPI("/popularReviews");
 
+  if(loading){
+    return <Loading/>;
+  }
+  
   const formateDate = (timeStamp) => {
     if (!timeStamp) return "Invalid Date";
     const date = new Date(Number(timeStamp));
@@ -66,7 +71,7 @@ const Sidebar = () => {
                   <div
                     className={`${transition} flex flex-col gap-2 md:gap-3 w-full p-4`}
                   >
-                    <p className={`${transition} flex item-center gap-1`}>
+                    <p className={`${transition} flex item-center gap-1 text-stone-500`}>
                       <span className="text-red-600">
                         <FaCalendarAlt />
                       </span>{" "}
@@ -99,7 +104,7 @@ const Sidebar = () => {
                   <div
                     className={`${transition} flex flex-col gap-2 md:gap-3 w-full p-4`}
                   >
-                    <p className={`${transition} flex item-center gap-1`}>
+                    <p className={`${transition} flex item-center gap-1 text-stone-500`}>
                       <span className="text-red-600">
                         <FaCalendarAlt />
                       </span>{" "}
@@ -108,13 +113,13 @@ const Sidebar = () => {
                     <h2 className="text-wrap font-semibold">
                       {popularData?.title}
                     </h2>
-                    <p className="text-gray-500 font-semibold flex items-center gap-1">
+                    <p className="text-stone-500 flex items-center gap-1">
                       <FaEye className="text-xl md:text-2xl" />{" "}
                       {popularData?.clickCount}
                     </p>
                   </div>
                 </Link>
-                <hr className="h-1 w-full mt-3 md:mt-5 text-stone-200" />
+                <div className="divider"></div>
               </div>
             ))}
           </div>

@@ -9,9 +9,16 @@ import { FaArrowDown, FaEdit, FaInfo, FaTrash } from "react-icons/fa";
 import Loading from "../../Loading/Loading";
 import NotFound from "../../NotFound/NotFound";
 import { Link } from "react-router-dom";
+import Sidebar from "../../Sidebar/Sidebar";
 
-const MyReviewAndWatchListFunction = ({ endpoint, endpointEmail, message, text, path }) => {
-  console.log()
+const MyReviewAndWatchListFunction = ({
+  endpoint,
+  endpointEmail,
+  message,
+  text,
+  path,
+  headerText
+}) => {
   // State to store reviews data
   const [data, setData] = useState([]);
   //State for loading status
@@ -142,10 +149,15 @@ const MyReviewAndWatchListFunction = ({ endpoint, endpointEmail, message, text, 
       console.error("Error incrementing click count:", error);
     }
   };
+
   return (
     <div>
-      <div className="px-4 md:px-0 md:w-11/12 mx-auto mt-24">
+      <div className="px-4 md:px-0 md:w-11/12 mx-auto mt-24 flex flex-col-reverse lg:flex-row gap-4 md:gap-5 w-full">
         <div>
+        <h2 className="bg-red-600 py-2 px-4 mb-5 text-white font-orbitron text-xl font-semibold md:font-bold relative">
+          {endpoint === "myReview" ? headerText : "My Watch List"}
+          <span className="w-0 h-0 border-l-10 border-r-10 border-t-10 border-l-transparent border-r-transparent border-red-600 absolute -bottom-2 left-6 -translate-x-1/2"></span>
+        </h2>
           <div className="overflow-x-auto">
             <table className="table">
               <thead>
@@ -190,7 +202,10 @@ const MyReviewAndWatchListFunction = ({ endpoint, endpointEmail, message, text, 
                     </td>
                     <td>{review?.reviewDescription}</td>
                     <th>
-                      <Link onClick={() => handleDetailsClick(review?._id)} to={`/review-details/${review?.watchId || review?._id}`}>
+                      <Link
+                        onClick={() => handleDetailsClick(review?.watchId)}
+                        to={`/review-details/${review?.watchId || review?._id}`}
+                      >
                         <button
                           className="btn btn-ghost hover:text-cyan-500 tooltip tooltip-info"
                           data-tip="Details"
@@ -198,22 +213,22 @@ const MyReviewAndWatchListFunction = ({ endpoint, endpointEmail, message, text, 
                           <FaInfo className=" font-semibold text-base md:text-lg" />
                         </button>
                       </Link>
-                      
+
                       <button
-                            onClick={() => handleDeleteReview(review?._id)}
-                            className="btn btn-ghost tooltip tooltip-error hover:text-red-600"
-                            data-tip="Delete"
-                          >
-                            <FaTrash className="font-semibold text-base md:text-lg" />
-                          </button>
+                        onClick={() => handleDeleteReview(review?._id)}
+                        className="btn btn-ghost tooltip tooltip-error hover:text-red-600"
+                        data-tip="Delete"
+                      >
+                        <FaTrash className="font-semibold text-base md:text-lg" />
+                      </button>
                       {user?.email === review?.reviewerEmail ? (
-                          <button
-                            onClick={() => updateReview(review?._id)}
-                            className="btn btn-ghost hover:text-cyan-500 tooltip tooltip-info"
-                            data-tip="Update"
-                          >
-                            <FaEdit className=" font-semibold text-base md:text-lg" />
-                          </button>
+                        <button
+                          onClick={() => updateReview(review?._id)}
+                          className="btn btn-ghost hover:text-cyan-500 tooltip tooltip-info"
+                          data-tip="Update"
+                        >
+                          <FaEdit className=" font-semibold text-base md:text-lg" />
+                        </button>
                       ) : (
                         ""
                       )}
@@ -224,6 +239,7 @@ const MyReviewAndWatchListFunction = ({ endpoint, endpointEmail, message, text, 
             </table>
           </div>
         </div>
+        <Sidebar />
       </div>
 
       {/* Modal for updating review */}

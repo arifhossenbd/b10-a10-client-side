@@ -6,6 +6,7 @@ import Sidebar from "../Sidebar/Sidebar";
 import GetAPI from "../../utils/GetAPI";
 import Loading from "../Loading/Loading";
 import NotFound from "../NotFound/NotFound";
+import Accordion from "../Accordion/Accordion";
 
 const Home = () => {
   const { loading, data } = GetAPI("/reviews");
@@ -29,9 +30,11 @@ const Home = () => {
       <div>
         <Banner />
       </div>
-      <div className={`px-4 md:px-0 md:w-11/12 mx-auto lg:mt-96 lg:pt-48`}>
+      <div
+        className={`px-4 md:px-0 md:w-11/12 mx-auto xl:mt-96 xl:pt-48`}
+      >
         <div
-          className={`lg:grid grid-cols-3 flex flex-col-reverse justify-between gap-4 md:gap-5 ${transition}`}
+          className={`lg:grid grid-cols-3 flex flex-col-reverse justify-between gap-4 md:gap-5 md:mt-5 ${transition}`}
         >
           <div className="col-span-2">
             <HighRatedGames />
@@ -39,6 +42,9 @@ const Home = () => {
           <div className="col-span-1">
             <Sidebar />
           </div>
+        </div>
+        <div className="md:w-10/12 mx-auto md:mt-5">
+          <Accordion />
         </div>
       </div>
     </div>
