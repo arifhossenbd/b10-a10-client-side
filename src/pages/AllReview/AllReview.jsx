@@ -56,7 +56,7 @@ const AllReview = () => {
   // Display "Not available" message if reviews not available
   if (!data || data?.length === 0) {
     return (
-      <NotFound message="All review is not available!" text="home" path="" />
+      <NotFound message="Reviews is not available!" text="home" path="" />
     );
   }
 
