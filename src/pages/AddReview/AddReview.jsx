@@ -4,6 +4,7 @@ import { AuthContext } from "../../provider/AuthProvider/AuthContext";
 import { FaArrowDown } from "react-icons/fa";
 import Swal from "sweetalert2";
 import crudOperation from "../../utils/apiClient";
+import { Typewriter } from "react-simple-typewriter";
 
 // Initial state for the review form
 const initialReview = {
@@ -101,10 +102,18 @@ const AddReview = () => {
             Add Review
           </h2>
           <p className="text-stone-500 text-wrap flex items-center justify-center gap-1 text-xs md:text-sm">
-            {`Welcome ${
+          <Typewriter
+            words= {[`Welcome ${
               user?.displayName || "Dear User"
-            }, please add your review below`}
-            <FaArrowDown />{" "}
+            }, please add your review below`]}
+            loop={5}
+            cursor
+            cursorStyle='|'
+            typeSpeed={70}
+            deleteSpeed={50}
+            delaySpeed={1000}
+          />
+            <FaArrowDown />
           </p>
         </div>
       </CrudRelatedForm>

@@ -10,6 +10,7 @@ import Loading from "../Loading/Loading";
 import NotFound from "../NotFound/NotFound";
 import Button from "../ReusableComponent/Buttons/Button";
 import { Link, useLocation } from "react-router-dom";
+import { Typewriter } from "react-simple-typewriter";
 
 const Banner = () => {
   const [data, setData] = useState([]);
@@ -85,7 +86,15 @@ const Banner = () => {
               <div className="hero-content text-neutral-content md:mt-24 text-left px-16 md:px-24 lg:px-32 w-full flex justify-start font-orbitron">
                 <div className="max-w-lg">
                   <h1 className="mb-2 md:mb-4 text-xl md:text-2xl lg:text-3xl font-bold">
-                    {review?.title}
+                    <Typewriter
+                      words={[review?.title]}
+                      loop={5}
+                      cursor
+                      cursorStyle="|"
+                      typeSpeed={70}
+                      deleteSpeed={50}
+                      delaySpeed={1000}
+                    />
                   </h1>
                   <h2
                     className={`${transition} bg-green-500 p-1 px-2 md:p-2 text-sm md:px-4 text-white font-semibold w-fit mb-2 md:mb-4`}

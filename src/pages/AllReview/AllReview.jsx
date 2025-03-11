@@ -5,6 +5,7 @@ import NotFound from "../../component/NotFound/NotFound";
 import GetAPI from "../../utils/GetAPI";
 import Sidebar from "../../component/Sidebar/Sidebar";
 import { useEffect, useRef, useState } from "react";
+import { Typewriter } from 'react-simple-typewriter'
 
 const AllReview = () => {
   const { loading, data } = GetAPI("/reviews");
@@ -65,7 +66,15 @@ const AllReview = () => {
     >
       <div className={`${transition} w-full`}>
         <h2 className="bg-red-600 py-2 px-4 text-white font-orbitron text-xl font-semibold md:font-bold relative">
-          All Games
+          <Typewriter
+            words={['All Reviews', 'Latest Feedback', 'User Opinions', 'Customer Testimonials', 'All Reviews']}
+            loop={5}
+            cursor
+            cursorStyle='|'
+            typeSpeed={70}
+            deleteSpeed={50}
+            delaySpeed={1000}
+          />
           <span className="w-0 h-0 border-l-10 border-r-10 border-t-10 border-l-transparent border-r-transparent border-red-600 absolute -bottom-2 left-6 -translate-x-1/2"></span>
         </h2>
         <div

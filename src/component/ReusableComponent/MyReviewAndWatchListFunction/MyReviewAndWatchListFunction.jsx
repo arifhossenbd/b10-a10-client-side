@@ -10,6 +10,7 @@ import Loading from "../../Loading/Loading";
 import NotFound from "../../NotFound/NotFound";
 import { Link } from "react-router-dom";
 import Sidebar from "../../Sidebar/Sidebar";
+import { Typewriter } from "react-simple-typewriter";
 
 const MyReviewAndWatchListFunction = ({
   endpoint,
@@ -17,7 +18,7 @@ const MyReviewAndWatchListFunction = ({
   message,
   text,
   path,
-  headerText
+  headerText,
 }) => {
   // State to store reviews data
   const [data, setData] = useState([]);
@@ -154,10 +155,10 @@ const MyReviewAndWatchListFunction = ({
     <div>
       <div className="px-4 md:px-0 md:w-11/12 mx-auto mt-24 flex flex-col-reverse lg:flex-row gap-4 md:gap-5 w-full">
         <div>
-        <h2 className="bg-red-600 py-2 px-4 mb-5 text-white font-orbitron text-xl font-semibold md:font-bold relative">
-          {endpoint === "myReview" ? headerText : "My Watch List"}
-          <span className="w-0 h-0 border-l-10 border-r-10 border-t-10 border-l-transparent border-r-transparent border-red-600 absolute -bottom-2 left-6 -translate-x-1/2"></span>
-        </h2>
+          <h2 className="bg-red-600 py-2 px-4 mb-5 text-white font-orbitron text-xl font-semibold md:font-bold relative">
+            {endpoint === "myReview" ? headerText : "My Watch List"}
+            <span className="w-0 h-0 border-l-10 border-r-10 border-t-10 border-l-transparent border-r-transparent border-red-600 absolute -bottom-2 left-6 -translate-x-1/2"></span>
+          </h2>
           <div className="overflow-x-auto">
             <table className="table">
               <thead>
@@ -278,9 +279,19 @@ const MyReviewAndWatchListFunction = ({
                   Update Review
                 </h2>
                 <p className="text-stone-500 text-wrap flex items-center justify-center gap-1 text-xs md:text-sm">
-                  {`Welcome ${
-                    user?.displayName || "Dear User"
-                  }, You can update your review`}
+                  <Typewriter
+                    words={[
+                      `Welcome ${
+                        user?.displayName || "Dear User"
+                      }, You can update your review`,
+                    ]}
+                    loop={5}
+                    cursor
+                    cursorStyle="|"
+                    typeSpeed={70}
+                    deleteSpeed={50}
+                    delaySpeed={1000}
+                  />
                   <FaArrowDown />{" "}
                 </p>
               </div>

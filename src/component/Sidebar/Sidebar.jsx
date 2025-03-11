@@ -4,16 +4,17 @@ import GetAPI from "../../utils/GetAPI";
 import { FaCalendarAlt, FaEye } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import Loading from "../Loading/Loading";
+import { Typewriter } from "react-simple-typewriter";
 
 const Sidebar = () => {
   const [activeTab, setActiveTab] = useState("recent");
   const { data: recent, loading } = GetAPI("/latestReviews");
   const { data: popular } = GetAPI("/popularReviews");
 
-  if(loading){
-    return <Loading/>;
+  if (loading) {
+    return <Loading />;
   }
-  
+
   const formateDate = (timeStamp) => {
     if (!timeStamp) return "Invalid Date";
     const date = new Date(Number(timeStamp));
@@ -38,7 +39,16 @@ const Sidebar = () => {
               : `bg-black text-white`
           } py-2 px-4 font-orbitron text-xl font-semibold md:font-bold w-full relative hover:bg-red-600 ${transition}`}
         >
-          Recent {activeTab === "recent" ? activeTriangle : ""}
+          <Typewriter
+            words={["Recent", "Reviews"]}
+            loop={true}
+            cursor
+            cursorStyle="|"
+            typeSpeed={70}
+            deleteSpeed={50}
+            delaySpeed={1000}
+          />
+           {activeTab === "recent" ? activeTriangle : ""}
         </button>
         <button
           onClick={() => setActiveTab("popular")}
@@ -48,7 +58,16 @@ const Sidebar = () => {
               : `bg-black text-white`
           } py-2 px-4 font-orbitron text-xl font-semibold md:font-bold w-full relative hover:bg-red-600 ${transition}`}
         >
-          Popular
+          <Typewriter
+            words={['Popular', "Reviews"]}
+            loop={2}
+            cursor
+            cursorStyle='|'
+            typeSpeed={70}
+            deleteSpeed={50}
+            delaySpeed={1000}
+          />
+          
           {activeTab === "popular" ? activeTriangle : ""}
         </button>
       </div>
@@ -71,7 +90,9 @@ const Sidebar = () => {
                   <div
                     className={`${transition} flex flex-col gap-2 md:gap-3 w-full p-4`}
                   >
-                    <p className={`${transition} flex item-center gap-1 text-stone-500`}>
+                    <p
+                      className={`${transition} flex item-center gap-1 text-stone-500`}
+                    >
                       <span className="text-red-600">
                         <FaCalendarAlt />
                       </span>{" "}
@@ -104,7 +125,9 @@ const Sidebar = () => {
                   <div
                     className={`${transition} flex flex-col gap-2 md:gap-3 w-full p-4`}
                   >
-                    <p className={`${transition} flex item-center gap-1 text-stone-500`}>
+                    <p
+                      className={`${transition} flex item-center gap-1 text-stone-500`}
+                    >
                       <span className="text-red-600">
                         <FaCalendarAlt />
                       </span>{" "}

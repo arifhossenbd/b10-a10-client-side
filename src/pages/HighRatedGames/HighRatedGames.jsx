@@ -4,6 +4,7 @@ import { transition } from "../../config/transition";
 import Button from "../../component/ReusableComponent/Buttons/Button";
 import { Link } from "react-router-dom";
 import { FaCalendarAlt, FaStar, FaUser } from "react-icons/fa";
+import { Typewriter } from "react-simple-typewriter";
 
 const HighRatedGames = () => {
   const [data, setData] = useState([]);
@@ -32,7 +33,15 @@ const HighRatedGames = () => {
   return (
     <div className={``}>
       <h2 className="bg-red-600 py-2 px-4 text-white font-orbitron text-xl font-semibold md:font-bold relative">
-        High Rated Games
+        <Typewriter
+          words={['High Rated Games', 'Top Rated Games', 'Highly Acclaimed Games', 'Best Reviewed Games', 'Top Picks for Gamers']}
+          loop={true}
+          cursor
+          cursorStyle='|'
+          typeSpeed={70}
+          deleteSpeed={50}
+          delaySpeed={1000}
+        />
         <span className="w-0 h-0 border-l-10 border-r-10 border-t-10 border-l-transparent border-r-transparent border-red-600 absolute -bottom-2 left-6 -translate-x-1/2"></span>
       </h2>
       <div className={`${transition} mt-5`}>
