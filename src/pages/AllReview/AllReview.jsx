@@ -10,6 +10,7 @@ const AllReview = () => {
   const { loading, data } = GetAPI("/reviews");
   const [isSearchVisible, setIsSearchVisible] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
+  const [sortOption, setSortOption] = useState("");
   const searchRef = useRef(null); // Ref for the search container
 
   useEffect(() => {
@@ -34,6 +35,18 @@ const AllReview = () => {
       )
     : data; // Show all data if no search term
 
+  // Sort data based on the selected option
+  const sortedData = filteredData?.slice().sort((a, b) => {
+    if (sortOption === "Rating") {
+      // Sort by Rating (Descending Order)
+      return parseInt(b.rating) - parseInt(a.rating);
+    } else if (sortOption === "Year") {
+      // Sort by Year (Descending Order)
+      return parseInt(b.publishingYear) - parseInt(a.publishingYear);
+    } else {
+      return 0; // No sorting
+    }
+  });
   // Display loading while data is being fetched
   if (loading) {
     return <Loading />;
@@ -55,12 +68,15 @@ const AllReview = () => {
           All Games
           <span className="w-0 h-0 border-l-10 border-r-10 border-t-10 border-l-transparent border-r-transparent border-red-600 absolute -bottom-2 left-6 -translate-x-1/2"></span>
         </h2>
-        <div className={`my-5 flex items-center justify-between ${transition}`}>
+        <div
+          className={`my-5 flex flex-col-reverse gap-3 md:flex-row md:items-center md:justify-between items-end ${transition}`}
+        >
           <select
-            defaultValue="Select for sort"
-            className="w-fit focus:outline-stone-600 p-2 rounded outline outline-stone-300"
+            defaultValue="Sort by"
+            className="w-48 focus:outline-stone-600 p-2 rounded outline outline-stone-300"
+            onChange={(e) => setSortOption(e.target.value)} // Update sort option
           >
-            <option disabled={true}>Select for sort</option>
+            <option disabled={true}>Sort by</option>
             <option>Rating</option>
             <option>Year</option>
           </select>
@@ -79,7 +95,8 @@ const AllReview = () => {
               onChange={(e) => setSearchTerm(e.target.value)}
             />
             {!isSearchVisible && (
-              <button data-tip="Click for search"
+              <button
+                data-tip="Click for search"
                 onClick={() => {
                   setIsSearchVisible(true);
                 }}
@@ -106,7 +123,7 @@ const AllReview = () => {
         <div
           className={`grid grid-cols-1 md:grid-cols-2 gap-2 md:gap-3 items-center mt-5 ${transition}`}
         >
-          {filteredData?.map((reviews) => (
+          {sortedData?.map((reviews) => (
             <Reviews key={reviews?._id} reviews={reviews} />
           ))}
         </div>
