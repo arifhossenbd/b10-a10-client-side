@@ -40,7 +40,7 @@ const Sidebar = () => {
           } py-2 px-4 font-orbitron text-xl font-semibold md:font-bold w-full relative hover:bg-red-600 ${transition}`}
         >
           <Typewriter
-            words={["Recent", "Reviews"]}
+            words={["Recent"]}
             loop={true}
             cursor
             cursorStyle="|"
@@ -59,7 +59,7 @@ const Sidebar = () => {
           } py-2 px-4 font-orbitron text-xl font-semibold md:font-bold w-full relative hover:bg-red-600 ${transition}`}
         >
           <Typewriter
-            words={['Popular', "Reviews"]}
+            words={['Popular']}
             loop={2}
             cursor
             cursorStyle='|'
@@ -78,24 +78,24 @@ const Sidebar = () => {
               <div key={recentData?._id}>
                 <Link
                   to={`/review-details/${recentData?._id}`}
-                  className={`${transition} flex flex-row justify-between items-center font-orbitron`}
+                  className={`${transition} flex flex-row justify-between font-orbitron`}
                 >
-                  <figure className="h-full w-60  mx-auto">
+                  <figure className="w-[420px] md:w-80">
                     <img
                       src={recentData?.coverImg}
-                      className={`w-full h-full object-center hover:scale-110 ${transition}`}
+                      className={`w-full h-fit object-center hover:scale-110 ${transition}`}
                       alt={recentData?.title}
                     />
                   </figure>
                   <div
-                    className={`${transition} flex flex-col gap-2 md:gap-3 w-full p-4`}
+                    className={`${transition} flex flex-col gap-1 w-full pl-4`}
                   >
                     <p
-                      className={`${transition} flex item-center gap-1 text-stone-500`}
+                      className={`${transition} flex item-center gap-1 text-stone-500 text-sm`}
                     >
                       <span className="text-red-600">
                         <FaCalendarAlt />
-                      </span>{" "}
+                      </span>
                       {formateDate(recentData?.timeStamp)}
                     </p>
                     <h2 className="text-wrap font-semibold">
@@ -103,7 +103,7 @@ const Sidebar = () => {
                     </h2>
                   </div>
                 </Link>
-                <hr className="h-1 w-full mt-3 md:mt-5 text-stone-200" />
+                <div className="divider"></div>
               </div>
             ))}
           </div>
@@ -113,32 +113,36 @@ const Sidebar = () => {
               <div key={popularData?._id}>
                 <Link
                   to={`/review-details/${popularData?._id}`}
-                  className={`${transition} flex flex-row justify-between items-center font-orbitron`}
+                  className={`${transition} flex flex-row justify-between font-orbitron`}
                 >
-                  <figure className="h-full w-60  mx-auto">
+                  <figure className="w-[420px] md:w-80">
                     <img
                       src={popularData?.coverImg}
-                      className={`w-full h-full object-center hover:scale-110 ${transition}`}
+                      className={`w-full h-fit object-center hover:scale-110 ${transition}`}
                       alt={popularData?.title}
                     />
                   </figure>
                   <div
-                    className={`${transition} flex flex-col gap-2 md:gap-3 w-full p-4`}
+                    className={`${transition} flex flex-col gap-1 w-full pl-4`}
                   >
                     <p
-                      className={`${transition} flex item-center gap-1 text-stone-500`}
+                      className={`${transition} flex item-center gap-1 text-stone-500 text-sm`}
                     >
                       <span className="text-red-600">
                         <FaCalendarAlt />
-                      </span>{" "}
+                      </span>
                       {formateDate(popularData?.timeStamp)}
                     </p>
                     <h2 className="text-wrap font-semibold">
                       {popularData?.title}
                     </h2>
-                    <p className="text-stone-500 flex items-center gap-1">
-                      <FaEye className="text-xl md:text-2xl" />{" "}
-                      {popularData?.clickCount}
+                    <p
+                      className={`${transition} flex item-center gap-1 text-stone-500 text-sm`}
+                    >
+                      <span className="text-red-600 text-lg md:text-xl">
+                        <FaEye />
+                      </span>
+                      {Number(popularData?.clickCount)}
                     </p>
                   </div>
                 </Link>

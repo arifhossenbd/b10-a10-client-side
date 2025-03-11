@@ -99,7 +99,7 @@ const ReviewDetails = () => {
   // condition to check if the logged in user is the owner of the review
   const canAddToWatchList = user?.email === reviewerEmail;
   return (
-    <div className="px-4 md:px-0 md:w-11/12 mx-auto mt-24 mb-12 flex flex-col md:flex-row justify-between gap-4 md:gap-5">
+    <div className="px-4 md:px-0 md:w-11/12 mx-auto mt-24 mb-12 flex flex-col lg:flex-row justify-between space-y-5 lg:space-y-0 gap-5">
       <div
         className={`card bg-base-100 shadow-xl rounded-none ${transition} hover:shadow-2xl font-orbitron w-full`}
       >

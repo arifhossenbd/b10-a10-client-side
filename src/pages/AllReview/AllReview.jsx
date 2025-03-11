@@ -137,9 +137,7 @@ const AllReview = () => {
           ))}
         </div>
       </div>
-      <div>
         <Sidebar />
-      </div>
     </div>
   );
 };

@@ -1,6 +1,6 @@
 // crudOperation utility function for making CRUD (Create, Read, Update, Delete) API request
 const crudOperation = async (method, endpoint, data = null) => {
-  const baseUrl = "http://localhost:5000"; // Base URL for the API
+  const baseUrl = "https://b10-a10-server-side-eta.vercel.app"; // Base URL for the API
   const url = `${baseUrl}${endpoint}`; // Construct the full URL using the base URL and endpoint
 
   // Define for header for the request

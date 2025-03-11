@@ -33,7 +33,8 @@ const CrudRelatedForm = ({
   // Get the current path from the URL
   const location = useLocation();
   const presentPath = location?.pathname; // Example: "/my-reviews"
-
+  const date = new Date();
+  const year = date.getFullYear();
   return (
     <div
       className={`${
@@ -136,8 +137,8 @@ const CrudRelatedForm = ({
                   name="rating"
                   value={rating}
                   type="number"
-                  className="border px-2 py-2 w-full border-stone-300 focus:outline-none focus:border-stone-400 rounded-none text-xs font-inter"
-                  placeholder="Rating"
+                  className="border px-2 py-2 w-full border-stone-300 focus:outline-none focus:border-stone-400 rounded-none text-xs font-inter validator"
+                  placeholder="Type a rating between 1 to 10" min="1" max="10" title="Must be between be 1 to 10"
                   required
                 />
               </div>
@@ -153,7 +154,7 @@ const CrudRelatedForm = ({
                   value={publishingYear}
                   type="number"
                   className={`border px-2 py-2 w-full border-stone-300 focus:outline-none focus:border-stone-400 rounded-none text-xs font-inter`}
-                  placeholder="Publishing Year"
+                  placeholder={`Type a year between 2000 to ${year}`} min="2000" max={year} title="Must be between be 1 to 10"
                   required
                 />
               </div>

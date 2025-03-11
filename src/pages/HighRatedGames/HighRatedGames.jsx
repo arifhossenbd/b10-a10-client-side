@@ -31,7 +31,7 @@ const HighRatedGames = () => {
   };
 
   return (
-    <div className={``}>
+    <div className={`col-span-2 ${transition}`}>
       <h2 className="bg-red-600 py-2 px-4 text-white font-orbitron text-xl font-semibold md:font-bold relative">
         <Typewriter
           words={['High Rated Games', 'Top Rated Games', 'Highly Acclaimed Games', 'Best Reviewed Games', 'Top Picks for Gamers']}
@@ -50,7 +50,7 @@ const HighRatedGames = () => {
             key={review?._id}
             className={`${transition} flex flex-col md:flex-row justify-between items-center gap-2 font-orbitron my-5 shadow`}
           >
-            <figure className="lg:w-10/12 lg:h-56 mx-auto">
+            <figure className="">
               <img
                 src={review?.coverImg}
                 className="w-full h-full object-center"

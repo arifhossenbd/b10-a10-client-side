@@ -88,7 +88,7 @@ const Banner = () => {
                   <h1 className="mb-2 md:mb-4 text-xl md:text-2xl lg:text-3xl font-bold">
                     <Typewriter
                       words={[review?.title]}
-                      loop={5}
+                      loop={true}
                       cursor
                       cursorStyle="|"
                       typeSpeed={70}
