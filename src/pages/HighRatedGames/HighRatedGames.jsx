@@ -1,25 +1,12 @@
-import { useEffect, useState } from "react";
-import crudOperation from "../../utils/apiClient";
 import { transition } from "../../config/transition";
 import Button from "../../component/ReusableComponent/Buttons/Button";
 import { Link } from "react-router-dom";
 import { FaCalendarAlt, FaStar, FaUser } from "react-icons/fa";
 import { Typewriter } from "react-simple-typewriter";
+import GetAPI from "../../utils/GetAPI";
 
 const HighRatedGames = () => {
-  const [data, setData] = useState([]);
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await crudOperation("GET", "/highRatedGames");
-        setData(response);
-      } catch (error) {
-        console.error("Error fetching reviews", error);
-      }
-    };
-    fetchData();
-  }, []);
-
+  const { data, loading } = GetAPI("topRatedReviews");
   const formateDate = (timeStamp) => {
     if (!timeStamp) return "Invalid Date";
     const date = new Date(Number(timeStamp));
@@ -30,14 +17,36 @@ const HighRatedGames = () => {
     });
   };
 
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center mt-24">
+        <span className="loading loading-dots w-10 h-10 sm:w-16 sm:h-16"></span>
+      </div>
+    );
+  }
+
+  if (!data || data?.length === 0) {
+    return (
+      <div className="flex items-center justify-center mt-24">
+        <p>Heigh rated reviews not found</p>
+      </div>
+    );
+  }
+
   return (
     <div className={`col-span-2 ${transition}`}>
       <h2 className="bg-red-600 py-2 px-4 text-white font-orbitron text-xl font-semibold md:font-bold relative">
         <Typewriter
-          words={['High Rated Games', 'Top Rated Games', 'Highly Acclaimed Games', 'Best Reviewed Games', 'Top Picks for Gamers']}
+          words={[
+            "High Rated Games",
+            "Top Rated Games",
+            "Highly Acclaimed Games",
+            "Best Reviewed Games",
+            "Top Picks for Gamers",
+          ]}
           loop={true}
           cursor
-          cursorStyle='|'
+          cursorStyle="|"
           typeSpeed={70}
           deleteSpeed={50}
           delaySpeed={1000}
@@ -50,7 +59,7 @@ const HighRatedGames = () => {
             key={review?._id}
             className={`${transition} flex flex-col md:flex-row justify-between items-center gap-2 font-orbitron my-5 shadow`}
           >
-            <figure className="">
+            <figure className="lg:w-1/2 w-full">
               <img
                 src={review?.coverImg}
                 className="w-full h-full object-center"
@@ -58,7 +67,7 @@ const HighRatedGames = () => {
               />
             </figure>
             <div
-              className={`${transition} flex flex-col gap-2 md:gap-3 w-full p-4`}
+              className={`${transition} flex flex-col gap-2 md:gap-3 lg:w-1/2 w-full p-4`}
             >
               <h2
                 className={`${transition} bg-green-500 p-1 md:p-2 px-2 md:px-4 text-white text-sm font-semibold w-fit`}
@@ -66,23 +75,29 @@ const HighRatedGames = () => {
                 {review?.genres}
               </h2>
               <div className={`${transition} flex flex-wrap gap-2 md:gap-3`}>
-                <p className={`${transition} flex item-center gap-1 text-sm text-stone-500`}>
+                <p
+                  className={`${transition} flex item-center gap-1 text-sm text-stone-500`}
+                >
                   <span className="text-red-600">
                     <FaCalendarAlt />
-                  </span>{" "}
-                  {formateDate(review?.timeStamp)}
+                  </span>
+                  {formateDate(Number(review?.timeStamp))}
                 </p>
-                <p className={`${transition} flex item-center gap-1 text-sm text-stone-500`}>
+                <p
+                  className={`${transition} flex item-center gap-1 text-sm text-stone-500`}
+                >
                   <span className="text-red-600 flex items-center gap-1">
                     <FaUser />
-                  </span>{" "}
+                  </span>
                   by {""}
                   {review?.reviewerName}
                 </p>
-                <p className={`${transition} flex item-center gap-1 text-sm text-stone-500`}>
+                <p
+                  className={`${transition} flex item-center gap-1 text-sm text-stone-500`}
+                >
                   <span className="text-red-600">
                     <FaStar />
-                  </span>{" "}
+                  </span>
                   {review?.rating}
                 </p>
               </div>

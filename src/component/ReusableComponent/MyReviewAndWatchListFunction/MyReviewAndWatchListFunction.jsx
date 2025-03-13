@@ -44,7 +44,7 @@ const MyReviewAndWatchListFunction = ({
         // Fetch reviews for the logged-in user
         const response = await crudOperation(
           "GET",
-          `/${endpoint}/${endpointEmail}`
+          `${endpoint}/${endpointEmail}`
         );
         setData(response); // Update the state with fetched data
       } catch (error) {
@@ -83,7 +83,7 @@ const MyReviewAndWatchListFunction = ({
     if (confirmDelete.isConfirmed) {
       try {
         // Send a DELETE request to delete the review
-        await crudOperation("DELETE", `/${endpoint}/${id}`);
+        await crudOperation("DELETE", `${endpoint}/${id}`);
         // Update the state to remove the deleted review immediate
         setData(data?.filter((review) => review?._id !== id));
         Swal.fire("Deleted", "Your review has been deleted.", "success");
@@ -109,7 +109,7 @@ const MyReviewAndWatchListFunction = ({
       // Send a PUT request to update the review
       const response = await crudOperation(
         "PUT",
-        `/${endpoint}/${updatedReview?._id}`,
+        `${endpoint}/${updatedReview?._id}`,
         updateData
       );
       if (response?.success) {
@@ -145,7 +145,7 @@ const MyReviewAndWatchListFunction = ({
   const handleDetailsClick = async (id) => {
     try {
       // Send a PUT request to increment the click count
-      await crudOperation("PUT", `/incrementClickCount/${id}`);
+      await crudOperation("PUT", `incrementClickCount/${id}`);
     } catch (error) {
       console.error("Error incrementing click count:", error);
     }
@@ -154,7 +154,7 @@ const MyReviewAndWatchListFunction = ({
   return (
     <div>
       <div className="px-4 md:px-0 md:w-11/12 mx-auto mt-24 flex flex-col-reverse lg:flex-row gap-4 md:gap-5 w-full">
-        <div>
+        <div className="lg:w-2/3 w-full">
           <h2 className="bg-red-600 py-2 px-4 mb-5 text-white font-orbitron text-xl font-semibold md:font-bold relative">
             {endpoint === "myReview" ? headerText : "My Watch List"}
             <span className="w-0 h-0 border-l-10 border-r-10 border-t-10 border-l-transparent border-r-transparent border-red-600 absolute -bottom-2 left-6 -translate-x-1/2"></span>
@@ -240,7 +240,9 @@ const MyReviewAndWatchListFunction = ({
             </table>
           </div>
         </div>
-        <Sidebar />
+        <div className="lg:w-1/3 w-full">
+          <Sidebar />
+        </div>
       </div>
 
       {/* Modal for updating review */}

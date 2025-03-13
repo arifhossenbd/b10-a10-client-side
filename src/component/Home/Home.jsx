@@ -5,11 +5,10 @@ import { transition } from "../../config/transition";
 import Sidebar from "../Sidebar/Sidebar";
 import GetAPI from "../../utils/GetAPI";
 import Loading from "../Loading/Loading";
-import NotFound from "../NotFound/NotFound";
 import Accordion from "../Accordion/Accordion";
 
 const Home = () => {
-  const { loading, data } = GetAPI("/reviews");
+  const { loading, data } = GetAPI("reviews");
 
   // Display loading while data is being fetched
   if (loading) {
@@ -19,7 +18,13 @@ const Home = () => {
   // Display "Not available" message if reviews not available
   if (!data || data?.length === 0) {
     return (
-      <NotFound message="All review is not available!" text="home" path="" />
+      <div
+        className={`lg:absolute top-0 left-0 right-0 flex flex-col items-center h-screen justify-center text-center bg-[url(/assets/1.jpg)] bg-black z-1 ${transition} text-stone-100`}
+      >
+        <p className="lg:text-lg font-semibold">
+          Reviews is not available!
+        </p>
+      </div>
     );
   }
   return (
@@ -30,16 +35,14 @@ const Home = () => {
       <div>
         <Banner />
       </div>
-      <div
-        className={`px-4 md:px-0 md:w-11/12 mx-auto xl:mt-96 xl:pt-48`}
-      >
+      <div className={`px-4 md:px-0 md:w-11/12 mx-auto xl:mt-96 xl:pt-48`}>
         <div
-          className={`lg:grid grid-cols-3 flex flex-col-reverse justify-between gap-4 md:gap-5 md:mt-5 ${transition}`}
+          className={`w-full flex flex-col-reverse lg:flex-row justify-between gap-4 md:gap-5 md:mt-5 ${transition}`}
         >
-          <div className="col-span-2">
+          <div className="lg:w-2/3 w-full">
             <HighRatedGames />
           </div>
-          <div className="col-span-1">
+          <div className="lg:w-1/3 w-full">
             <Sidebar />
           </div>
         </div>

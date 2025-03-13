@@ -14,11 +14,13 @@ const initialReview = {
   reviewDescription: "",
   rating: "",
   publishingYear: "",
-  reviewerName: "",
-  reviewerEmail: "",
-  timeStamp: "",
 };
 const AddReview = () => {
+  const [userInfo, setUserInfo] = useState({
+    reviewerName: "",
+    reviewerEmail: "",
+  });
+
   // Access user and loading state from the AuthContext
   const { user, loading } = useContext(AuthContext);
 
@@ -31,12 +33,11 @@ const AddReview = () => {
   // Effect to update user-related fields in the review form when the user data is available
   useEffect(() => {
     if (user) {
-      setReview((prevReview) => ({
-        ...prevReview,
+      setUserInfo({
         reviewerName: user?.displayName || "User not found!", // Set reviewerName
         reviewerEmail: user?.email || "Email not found!", // Set reviewerEmail
-        timeStamp: user?.metadata?.lastLoginAt || "Time not found!", // Set TimeStamp
-      }));
+        timeStamp: user?.metadata.lastLoginAt || "Time not found!", // Set reviewers time
+      });
     }
   }, [user]);
 
@@ -51,16 +52,10 @@ const AddReview = () => {
 
   // Function to handle form submission
   const handleSubmit = async (finalReview) => {
-    if(!finalReview.reviewerEmail){
-      Swal.fire("Warning", "Please email provide", "warning")
-      return;
-    }
-    console.log(user?.email, finalReview?.reviewerEmail)
     setSubmitLoading(true); // Set setSubmitLoading state to true during API call
     try {
       // Send a POST request to add the review
-      await crudOperation("POST", "/review", finalReview);
-
+      await crudOperation("POST", "review", finalReview);
       // Show success notification
       Swal.fire({
         icon: "success",
@@ -74,8 +69,17 @@ const AddReview = () => {
         reviewerEmail: prevReview.reviewerEmail, // Retain reviewerEmail
       }));
 
-      setReview(initialReview)
+      setReview(initialReview);
     } catch (error) {
+      console.log(error);
+      if (error.message === "HTTP error! Status: 409") {
+        Swal.fire(
+          "Warning",
+          "This review already exists!, Please try again another review",
+          "warning"
+        );
+        return;
+      }
       // Show error notification if submission fail
       Swal.fire({
         icon: "error",
@@ -91,7 +95,7 @@ const AddReview = () => {
       {/* Reusable CRUDRelatedForm  component */}
       <CrudRelatedForm
         btnText="Add Review" // Button text
-        review={review} // Review form data
+        review={{ ...review, ...userInfo }} // Review form data
         handleSubmit={handleSubmit} // Form submission handler
         handleChange={handleChange} // Input change handler
         loading={loading} // Loading state from AuthContext
@@ -102,17 +106,21 @@ const AddReview = () => {
             Add Review
           </h2>
           <p className="text-stone-500 text-wrap flex items-center justify-center gap-1 text-xs md:text-sm">
-          <Typewriter
-            words= {[`Welcome ${
-              user?.displayName || "Dear User"
-            }, please add your review below`]}
-            loop={5}
-            cursor
-            cursorStyle='|'
-            typeSpeed={70}
-            deleteSpeed={50}
-            delaySpeed={1000}
-          />
+            <Typewriter
+              words={[
+                `Welcome ${
+                  user?.displayName || "Dear User"
+                }, please add your review below`,
+                "Share your thoughts with us!",
+                "Your feedback matters!",
+              ]}
+              loop={5}
+              cursor
+              cursorStyle="|"
+              typeSpeed={70}
+              deleteSpeed={50}
+              delaySpeed={1000}
+            />
             <FaArrowDown />
           </p>
         </div>

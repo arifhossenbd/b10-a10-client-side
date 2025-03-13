@@ -9,7 +9,7 @@ const Reviews = ({ reviews }) => {
   const handleDetailsClick = async (id) => {
     try {
       // Send a PUT request to increment the click count
-      await crudOperation("PUT", `/incrementClickCount/${id}`);
+      await crudOperation("PUT", `incrementClickCount/${id}`);
     } catch (error) {
       console.error("Error incrementing click count:", error);
     }

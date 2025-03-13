@@ -4,33 +4,16 @@ import "swiper/css";
 import "swiper/css/navigation";
 import { FaChevronLeft, FaChevronRight } from "react-icons/fa"; // Import icons
 import { transition } from "../../config/transition";
-import { useEffect, useState } from "react";
-import crudOperation from "../../utils/apiClient";
 import Loading from "../Loading/Loading";
-import NotFound from "../NotFound/NotFound";
 import Button from "../ReusableComponent/Buttons/Button";
 import { Link, useLocation } from "react-router-dom";
 import { Typewriter } from "react-simple-typewriter";
+import GetAPI from "../../utils/GetAPI";
 
 const Banner = () => {
-  const [data, setData] = useState([]);
-  const [loading, setLoading] = useState(false);
+  const { data, loading } = GetAPI("latestGames");
   const location = useLocation();
   const presentPath = location?.pathname;
-  useEffect(() => {
-    const fetchData = async () => {
-      setLoading(true);
-      try {
-        const response = await crudOperation("GET", "/latestReviews");
-        setData(response);
-      } catch (error) {
-        console.error("Error fetching reviews", error);
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchData();
-  }, []);
 
   if (loading) {
     return <Loading />;
@@ -38,11 +21,13 @@ const Banner = () => {
 
   if (!data || data?.length === 0) {
     return (
-      <NotFound
-        message="Highest rated review is not available!"
-        text="home"
-        path=""
-      />
+      <div
+        className={`lg:absolute top-0 left-0 right-0 flex flex-col items-center h-screen justify-center text-center bg-[url(/assets/1.jpg)] ${transition} text-stone-100`}
+      >
+        <p className="lg:text-lg font-semibold">
+          Latest reviews is not available!
+        </p>
+      </div>
     );
   }
   return (

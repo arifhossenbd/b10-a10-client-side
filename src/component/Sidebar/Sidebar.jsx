@@ -3,17 +3,12 @@ import { transition } from "../../config/transition";
 import GetAPI from "../../utils/GetAPI";
 import { FaCalendarAlt, FaEye } from "react-icons/fa";
 import { Link } from "react-router-dom";
-import Loading from "../Loading/Loading";
 import { Typewriter } from "react-simple-typewriter";
 
 const Sidebar = () => {
   const [activeTab, setActiveTab] = useState("recent");
-  const { data: recent, loading } = GetAPI("/latestReviews");
-  const { data: popular } = GetAPI("/popularReviews");
-
-  if (loading) {
-    return <Loading />;
-  }
+  const { data: recent, loading: recentLoading } = GetAPI("latestReviews");
+  const { data: popular, loading: popularLoading } = GetAPI("popularReviews");
 
   const formateDate = (timeStamp) => {
     if (!timeStamp) return "Invalid Date";
@@ -28,8 +23,24 @@ const Sidebar = () => {
     <span className="w-0 h-0 border-l-10 border-r-10 border-t-10 border-l-transparent border-r-transparent border-red-600 absolute -bottom-2 left-1/2 -translate-x-1/2"></span>
   );
 
+  if (recentLoading || popularLoading) {
+    return (
+      <div className="flex items-center justify-center mt-24">
+        <span className="loading loading-dots w-10 h-10 sm:w-16 sm:h-16"></span>
+      </div>
+    );
+  }
+
+  if (recent?.length === 0 || popular?.length === 0) {
+    return (
+      <div className="flex items-center justify-center mt-24">
+        <p>Reviews not found</p>
+      </div>
+    );
+  }
+
   return (
-    <div className={`${transition}`}>
+    <div className={`${transition} w-full`}>
       <div className={`${transition} flex w-full`}>
         <button
           onClick={() => setActiveTab("recent")}
@@ -48,7 +59,7 @@ const Sidebar = () => {
             deleteSpeed={50}
             delaySpeed={1000}
           />
-           {activeTab === "recent" ? activeTriangle : ""}
+          {activeTab === "recent" ? activeTriangle : ""}
         </button>
         <button
           onClick={() => setActiveTab("popular")}
@@ -59,37 +70,35 @@ const Sidebar = () => {
           } py-2 px-4 font-orbitron text-xl font-semibold md:font-bold w-full relative hover:bg-red-600 ${transition}`}
         >
           <Typewriter
-            words={['Popular']}
+            words={["Popular"]}
             loop={2}
             cursor
-            cursorStyle='|'
+            cursorStyle="|"
             typeSpeed={70}
             deleteSpeed={50}
             delaySpeed={1000}
           />
-          
+
           {activeTab === "popular" ? activeTriangle : ""}
         </button>
       </div>
       <div className={`mt-5 ${transition}`}>
         {activeTab === "recent" ? (
-          <div className="space-y-3 md:space-y-5">
+          <div>
             {recent?.map((recentData) => (
               <div key={recentData?._id}>
                 <Link
                   to={`/review-details/${recentData?._id}`}
-                  className={`${transition} flex flex-row justify-between font-orbitron`}
+                  className={`${transition} flex items-center gap-4 font-orbitron`}
                 >
-                  <figure className="w-[420px] md:w-80">
+                  <figure className="lg:h-48 h-32">
                     <img
                       src={recentData?.coverImg}
-                      className={`w-full h-fit object-center hover:scale-110 ${transition}`}
+                      className={`w-full h-full object-center hover:scale-110 ${transition}`}
                       alt={recentData?.title}
                     />
                   </figure>
-                  <div
-                    className={`${transition} flex flex-col gap-1 w-full pl-4`}
-                  >
+                  <div className={`${transition} flex flex-col gap-1 w-2/3`}>
                     <p
                       className={`${transition} flex item-center gap-1 text-stone-500 text-sm`}
                     >
@@ -108,23 +117,21 @@ const Sidebar = () => {
             ))}
           </div>
         ) : (
-          <div className="space-y-3 md:space-y-5">
+          <div>
             {popular?.map((popularData) => (
               <div key={popularData?._id}>
                 <Link
                   to={`/review-details/${popularData?._id}`}
-                  className={`${transition} flex flex-row justify-between font-orbitron`}
+                  className={`${transition} flex items-center gap-4 font-orbitron`}
                 >
-                  <figure className="w-[420px] md:w-80">
+                  <figure className="lg:h-48 h-32">
                     <img
                       src={popularData?.coverImg}
-                      className={`w-full h-fit object-center hover:scale-110 ${transition}`}
+                      className={`w-full h-full object-center hover:scale-110 ${transition}`}
                       alt={popularData?.title}
                     />
                   </figure>
-                  <div
-                    className={`${transition} flex flex-col gap-1 w-full pl-4`}
-                  >
+                  <div className={`${transition} flex flex-col gap-1 w-2/3`}>
                     <p
                       className={`${transition} flex item-center gap-1 text-stone-500 text-sm`}
                     >

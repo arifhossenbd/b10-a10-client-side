@@ -5,13 +5,15 @@ import NotFound from "../../component/NotFound/NotFound";
 import GetAPI from "../../utils/GetAPI";
 import Sidebar from "../../component/Sidebar/Sidebar";
 import { useEffect, useRef, useState } from "react";
-import { Typewriter } from 'react-simple-typewriter'
+import { Typewriter } from "react-simple-typewriter";
 
 const AllReview = () => {
-  const { loading, data } = GetAPI("/reviews");
+  const [page, setPage] = useState(1);
   const [isSearchVisible, setIsSearchVisible] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
   const [sortOption, setSortOption] = useState("");
+  const { loading, data, totalPages } = GetAPI("reviews", page, 5);
+  const reviews = data?.data || [];
   const searchRef = useRef(null); // Ref for the search container
 
   useEffect(() => {
@@ -31,19 +33,19 @@ const AllReview = () => {
 
   // Filter data based on search term (e.g., title)
   const filteredData = searchTerm
-    ? data?.filter((review) =>
-        review?.title.toLowerCase().includes(searchTerm.toLowerCase())
+    ? reviews?.filter((review) =>
+        review?.title?.toLowerCase()?.includes(searchTerm?.toLowerCase())
       )
-    : data; // Show all data if no search term
+    : reviews; // Show all data if no search term
 
   // Sort data based on the selected option
   const sortedData = filteredData?.slice().sort((a, b) => {
     if (sortOption === "Rating") {
       // Sort by Rating (Descending Order)
-      return parseInt(b.rating) - parseInt(a.rating);
+      return parseInt(b?.rating) - parseInt(a?.rating);
     } else if (sortOption === "Year") {
       // Sort by Year (Descending Order)
-      return parseInt(b.publishingYear) - parseInt(a.publishingYear);
+      return parseInt(b?.publishingYear) - parseInt(a?.publishingYear);
     } else {
       return 0; // No sorting
     }
@@ -55,22 +57,32 @@ const AllReview = () => {
 
   // Display "Not available" message if reviews not available
   if (!data || data?.length === 0) {
-    return (
-      <NotFound message="Reviews is not available!" text="home" path="" />
-    );
+    return <NotFound message="Reviews is not available!" text="home" path="" />;
   }
 
+  //Function to generate page number dynamically (show 5 pages max)
+  const getPageNumbers = () => {
+    let start = Math.max(1, page - 2);
+    let end = Math.min(totalPages, start + 4);
+    return Array.from({ length: end - start + 1 }, (_, i) => start + i);
+  };
   return (
     <div
-      className={`px-4 md:px-0 md:w-11/12 mx-auto mt-24 flex flex-col-reverse lg:flex-row gap-4 md:gap-5 w-full ${transition}`}
+      className={`px-4 md:px-0 md:w-11/12 mx-auto mt-24 flex flex-col-reverse lg:flex-row justify-between gap-4 md:gap-5 ${transition}`}
     >
-      <div className={`${transition} w-full`}>
+      <div className={`${transition} lg:w-2/3 w-full`}>
         <h2 className="bg-red-600 py-2 px-4 text-white font-orbitron text-xl font-semibold md:font-bold relative">
           <Typewriter
-            words={['All Reviews', 'Latest Feedback', 'User Opinions', 'Customer Testimonials', 'All Reviews']}
+            words={[
+              "All Reviews",
+              "Latest Feedback",
+              "User Opinions",
+              "Customer Testimonials",
+              "All Reviews",
+            ]}
             loop={5}
             cursor
-            cursorStyle='|'
+            cursorStyle="|"
             typeSpeed={70}
             deleteSpeed={50}
             delaySpeed={1000}
@@ -136,8 +148,48 @@ const AllReview = () => {
             <Reviews key={reviews?._id} reviews={reviews} />
           ))}
         </div>
+
+        {/* Pagination control */}
+        <div
+          className={`${transition} flex items-center flex-wrap gap-1 justify-center mt-6`}
+        >
+          {/* Previous Button */}
+          <button
+            onClick={() => setPage((prev) => Math.max(prev - 1, 1))}
+            disabled={page === 1}
+            className={`${transition} btn btn-outline rounded-none btn-sm mx-2`}
+          >
+            Previous
+          </button>
+          {/* Page Numbers */}
+          <div className={`${transition} flex items-center gap-1 md:gap-2 flex-wrap`}>
+            {getPageNumbers().map((p) => (
+              <button
+                key={p}
+                onClick={() => setPage(p)}
+                className={`${transition} btn btn-sm ${
+                  p === page
+                    ? `bg-red-600 rounded-none text-white ${transition}`
+                    : `${transition} rounded-none btn-outline border-red-600 hover:border-none`
+                }`}
+              >
+                {p}
+              </button>
+            ))}
+          </div>
+          {/* Next Button */}
+          <button
+            onClick={() => setPage((prev) => Math.min(prev + 1, totalPages))}
+            disabled={page === totalPages}
+            className={`${transition} btn btn-outline rounded-none btn-sm mx-2`}
+          >
+            Next
+          </button>
+        </div>
       </div>
+      <div className="lg:w-1/3 w-full">
         <Sidebar />
+      </div>
     </div>
   );
 };

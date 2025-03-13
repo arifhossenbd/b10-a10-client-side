@@ -90,7 +90,7 @@ const CrudRelatedForm = ({
                 value={genres || ""}
                 onChange={handleChange}
                 required
-                className="border px-1 py-2 w-full border-stone-300 focus:outline-none focus:border-stone-400 rounded-none text-xs font-inter appearance-none"
+                className="border px-1 py-2 w-full border-stone-300 focus:outline-none focus:border-stone-400 rounded-none text-xs font-inter dark:bg-gray-800 dark:border-gray-700 dark:text-white"
               >
                 <option disabled value="">
                   Pick Genres
@@ -138,7 +138,10 @@ const CrudRelatedForm = ({
                   value={rating}
                   type="number"
                   className="border px-2 py-2 w-full border-stone-300 focus:outline-none focus:border-stone-400 rounded-none text-xs font-inter validator"
-                  placeholder="Type a rating between 1 to 10" min="1" max="10" title="Must be between be 1 to 10"
+                  placeholder="Type a rating between 1 to 10"
+                  min="1"
+                  max="10"
+                  title="Must be between be 1 to 10"
                   required
                 />
               </div>
@@ -154,7 +157,10 @@ const CrudRelatedForm = ({
                   value={publishingYear}
                   type="number"
                   className={`border px-2 py-2 w-full border-stone-300 focus:outline-none focus:border-stone-400 rounded-none text-xs font-inter`}
-                  placeholder={`Type a year between 2000 to ${year}`} min="2000" max={year} title="Must be between be 1 to 10"
+                  placeholder={`Type a year between 2000 to ${year}`}
+                  min="2000"
+                  max={year}
+                  title="Must be between be 1 to 10"
                   required
                 />
               </div>
