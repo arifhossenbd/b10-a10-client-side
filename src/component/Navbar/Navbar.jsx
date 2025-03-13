@@ -195,12 +195,12 @@ const Navbar = () => {
                 className="md:h-12 md:w-12 h-10 w-10"
                 alt="Logo"
               />
-              <p className="text-2xl md:text-3xl font-semibold font-orbitron">
+              <p className="text-2xl md:text-3xl font-semibold font-orbitron text-stone-400 dark:text-white">
                 Chill Gamer
               </p>
             </Link>
           </div>
-          <ul className="hidden lg:flex">
+          <ul className="hidden lg:flex text-stone-400 dark:text-white">
             <NavLinks />
           </ul>
           <div>
