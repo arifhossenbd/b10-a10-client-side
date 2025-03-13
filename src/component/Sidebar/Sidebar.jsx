@@ -23,21 +23,11 @@ const Sidebar = () => {
     <span className="w-0 h-0 border-l-10 border-r-10 border-t-10 border-l-transparent border-r-transparent border-red-600 absolute -bottom-2 left-1/2 -translate-x-1/2"></span>
   );
 
-  if (recentLoading || popularLoading) {
-    return (
-      <div className="flex items-center justify-center mt-24">
-        <span className="loading loading-dots w-10 h-10 sm:w-16 sm:h-16"></span>
-      </div>
-    );
-  }
-
-  if (recent?.length === 0 || popular?.length === 0) {
-    return (
-      <div className="flex items-center justify-center mt-24">
-        <p>Reviews not found</p>
-      </div>
-    );
-  }
+  const loadingDots = (
+    <div className="flex items-center justify-center mt-12">
+      <span className="loading loading-dots w-10 h-10 sm:w-16 sm:h-16"></span>
+    </div>
+  );
 
   return (
     <div className={`${transition} w-full`}>
@@ -85,77 +75,101 @@ const Sidebar = () => {
       <div className={`mt-5 ${transition}`}>
         {activeTab === "recent" ? (
           <div>
-            {recent?.map((recentData) => (
-              <div key={recentData?._id}>
-                <Link
-                  to={`/review-details/${recentData?._id}`}
-                  className={`${transition} flex items-center gap-4 font-orbitron`}
-                >
-                  <figure className="lg:h-48 h-32">
-                    <img
-                      src={recentData?.coverImg}
-                      className={`w-full h-full object-center hover:scale-110 ${transition}`}
-                      alt={recentData?.title}
-                    />
-                  </figure>
-                  <div className={`${transition} flex flex-col gap-1 w-2/3`}>
-                    <p
-                      className={`${transition} flex item-center gap-1 text-stone-500 text-sm`}
-                    >
-                      <span className="text-red-600">
-                        <FaCalendarAlt />
-                      </span>
-                      {formateDate(recentData?.timeStamp)}
-                    </p>
-                    <h2 className="text-wrap font-semibold">
-                      {recentData?.title}
-                    </h2>
+            {recentLoading ? loadingDots : (
+              <div>
+                {!recent || recent?.length === 0 ? (
+                  <div className="flex items-center justify-center mt-12">
+                    <p>Recent reviews not found</p>
                   </div>
-                </Link>
-                <div className="divider"></div>
+                ) : (
+                  recent?.map((recentData) => (
+                    <div key={recentData?._id}>
+                      <Link
+                        to={`/review-details/${recentData?._id}`}
+                        className={`${transition} flex items-center gap-4 font-orbitron`}
+                      >
+                        <figure className="lg:h-48 h-32">
+                          <img
+                            src={recentData?.coverImg}
+                            className={`w-full h-full object-center hover:scale-110 ${transition}`}
+                            alt={recentData?.title}
+                          />
+                        </figure>
+                        <div
+                          className={`${transition} flex flex-col gap-1 w-2/3`}
+                        >
+                          <p
+                            className={`${transition} flex item-center gap-1 text-stone-500 text-sm`}
+                          >
+                            <span className="text-red-600">
+                              <FaCalendarAlt />
+                            </span>
+                            {formateDate(recentData?.timeStamp)}
+                          </p>
+                          <h2 className="text-wrap font-semibold">
+                            {recentData?.title}
+                          </h2>
+                        </div>
+                      </Link>
+                      <div className="divider"></div>
+                    </div>
+                  ))
+                )}
               </div>
-            ))}
+            )}
           </div>
         ) : (
           <div>
-            {popular?.map((popularData) => (
-              <div key={popularData?._id}>
-                <Link
-                  to={`/review-details/${popularData?._id}`}
-                  className={`${transition} flex items-center gap-4 font-orbitron`}
-                >
-                  <figure className="lg:h-48 h-32">
-                    <img
-                      src={popularData?.coverImg}
-                      className={`w-full h-full object-center hover:scale-110 ${transition}`}
-                      alt={popularData?.title}
-                    />
-                  </figure>
-                  <div className={`${transition} flex flex-col gap-1 w-2/3`}>
-                    <p
-                      className={`${transition} flex item-center gap-1 text-stone-500 text-sm`}
-                    >
-                      <span className="text-red-600">
-                        <FaCalendarAlt />
-                      </span>
-                      {formateDate(popularData?.timeStamp)}
-                    </p>
-                    <h2 className="text-wrap font-semibold">
-                      {popularData?.title}
-                    </h2>
-                    <p
-                      className={`${transition} flex item-center gap-1 text-stone-500 text-sm`}
-                    >
-                      <span className="text-red-600 text-lg md:text-xl">
-                        <FaEye />
-                      </span>
-                      {Number(popularData?.clickCount)}
-                    </p>
+            {popularLoading ? loadingDots : (
+              <div>
+                {!popular || popular?.length === 0 ? (
+                  <div className="flex items-center justify-center mt-8">
+                    <p>Popular reviews not found</p>
                   </div>
-                </Link>
-                <div className="divider"></div>
+                ) : (
+                  popular?.map((popularData) => (
+                    <div key={popularData?._id}>
+                      <Link
+                        to={`/review-details/${popularData?._id}`}
+                        className={`${transition} flex items-center gap-4 font-orbitron`}
+                      >
+                        <figure className="lg:h-48 h-32">
+                          <img
+                            src={popularData?.coverImg}
+                            className={`w-full h-full object-center hover:scale-110 ${transition}`}
+                            alt={popularData?.title}
+                          />
+                        </figure>
+                        <div
+                          className={`${transition} flex flex-col gap-1 w-2/3`}
+                        >
+                          <p
+                            className={`${transition} flex item-center gap-1 text-stone-500 text-sm`}
+                          >
+                            <span className="text-red-600">
+                              <FaCalendarAlt />
+                            </span>
+                            {formateDate(popularData?.timeStamp)}
+                          </p>
+                          <h2 className="text-wrap font-semibold">
+                            {popularData?.title}
+                          </h2>
+                          <p
+                            className={`${transition} flex item-center gap-1 text-stone-500 text-sm`}
+                          >
+                            <span className="text-red-600 text-lg md:text-xl">
+                              <FaEye />
+                            </span>
+                            {Number(popularData?.clickCount)}
+                          </p>
+                        </div>
+                      </Link>
+                      <div className="divider"></div>
+                    </div>
+                  ))
+                )}
               </div>
-            ))}
+            )}
           </div>
         )}
       </div>
