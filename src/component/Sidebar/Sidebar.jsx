@@ -88,7 +88,7 @@ const Sidebar = () => {
                         to={`/review-details/${recentData?._id}`}
                         className={`${transition} flex items-center gap-4 font-orbitron`}
                       >
-                        <figure className="lg:h-48 h-32">
+                        <figure className="md:h-48 md:w-96 h-32 w-60">
                           <img
                             src={recentData?.coverImg}
                             className={`w-full h-full object-center hover:scale-110 ${transition}`}
@@ -133,7 +133,7 @@ const Sidebar = () => {
                         to={`/review-details/${popularData?._id}`}
                         className={`${transition} flex items-center gap-4 font-orbitron`}
                       >
-                        <figure className="lg:h-48 h-32">
+                        <figure className="md:h-48 md:w-96 h-32 w-60">
                           <img
                             src={popularData?.coverImg}
                             className={`w-full h-full object-center hover:scale-110 ${transition}`}
