@@ -25,7 +25,7 @@ const Banner = () => {
         className={`lg:absolute top-0 left-0 right-0 flex flex-col items-center h-screen justify-center text-center bg-[url(/assets/1.jpg)] ${transition} text-stone-100`}
       >
         <p className="lg:text-lg font-semibold">
-          Latest reviews is not available!
+          Latest games not available!
         </p>
       </div>
     );

@@ -22,7 +22,7 @@ const Home = () => {
         className={`lg:absolute top-0 left-0 right-0 flex flex-col items-center h-screen justify-center text-center bg-[url(/assets/1.jpg)] bg-black z-1 ${transition} text-stone-100`}
       >
         <p className="lg:text-lg font-semibold">
-          Reviews is not available!
+          Reviews not found!
         </p>
       </div>
     );

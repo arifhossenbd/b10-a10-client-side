@@ -58,7 +58,6 @@ const ReviewDetails = () => {
         reviewDescription: data?.reviewDescription,
         visitor: user?.email,
       };
-      console.log(watchListData);
       // Send a POST request to add the review to the WatchList
       await crudOperation("POST", "watchList", watchListData);
       // Show success notification
