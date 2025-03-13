@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import crudOperation from "./apiClient";
 
-const GetAPI = (endpoint, page = 1, limit = 5) => {
+const GetAPI = (endpoint, page = 1, limit = 6) => {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(false);
   const [totalPages, setTotalPages] = useState(1);

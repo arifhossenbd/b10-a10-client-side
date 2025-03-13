@@ -248,11 +248,11 @@ const MyReviewAndWatchListFunction = ({
       {/* Modal for updating review */}
       <dialog
         id="modal"
-        className={`modal modal-middle space-y-2 relative px-4 md:px-0`}
+        className={`modal flex items-center justify-center modal-middle space-y-2 fixed px-4 md:px-0`}
         onClick={(e) => e.target.tagName === "DIALOG" && e.target.close()}
       >
         <div
-          className={`modal-box rounded-none modal-middle w-full max-w-2xl ${transition}`}
+          className={`modal-box rounded-none w-full max-w-2xl ${transition}`}
         >
           <button
             onClick={() => document.getElementById("modal").close()}

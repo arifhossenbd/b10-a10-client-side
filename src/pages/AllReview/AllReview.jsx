@@ -12,7 +12,7 @@ const AllReview = () => {
   const [isSearchVisible, setIsSearchVisible] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
   const [sortOption, setSortOption] = useState("");
-  const { loading, data, totalPages } = GetAPI("reviews", page, 5);
+  const { loading, data, totalPages } = GetAPI("reviews", page, 6);
   const reviews = data?.data || [];
   const searchRef = useRef(null); // Ref for the search container
 

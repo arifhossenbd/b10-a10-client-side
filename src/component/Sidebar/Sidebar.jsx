@@ -78,7 +78,7 @@ const Sidebar = () => {
             {recentLoading ? loadingDots : (
               <div>
                 {!recent || recent?.length === 0 ? (
-                  <div className="flex items-center justify-center mt-12">
+                  <div className="flex items-center justify-center mt-7">
                     <p>Recent reviews not found</p>
                   </div>
                 ) : (
@@ -88,7 +88,7 @@ const Sidebar = () => {
                         to={`/review-details/${recentData?._id}`}
                         className={`${transition} flex items-center gap-4 font-orbitron`}
                       >
-                        <figure className="md:h-48 md:w-96 h-32 w-60">
+                        <figure className="h-28 w-60">
                           <img
                             src={recentData?.coverImg}
                             className={`w-full h-full object-center hover:scale-110 ${transition}`}
@@ -106,7 +106,7 @@ const Sidebar = () => {
                             </span>
                             {formateDate(recentData?.timeStamp)}
                           </p>
-                          <h2 className="text-wrap font-semibold">
+                          <h2 className="text-wrap overflow-hidden text-ellipsis line-clamp-2 font-semibold">
                             {recentData?.title}
                           </h2>
                         </div>
@@ -123,7 +123,7 @@ const Sidebar = () => {
             {popularLoading ? loadingDots : (
               <div>
                 {!popular || popular?.length === 0 ? (
-                  <div className="flex items-center justify-center mt-8">
+                  <div className="flex items-center justify-center mt-7">
                     <p>Popular reviews not found</p>
                   </div>
                 ) : (
