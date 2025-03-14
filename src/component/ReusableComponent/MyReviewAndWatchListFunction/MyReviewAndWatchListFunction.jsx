@@ -24,10 +24,17 @@ const MyReviewAndWatchListFunction = ({
   const [updateLoading, setUpdateLoading] = useState(false);
   //State to store the selected review for update
   const [selectedReview, setSelectedReview] = useState();
+  const [page, setPage] = useState(1);
   //Getting the logged in user from AuthContext
   const { user } = useContext(AuthContext);
   const email = user?.email;
-  const { data, setData, loading } = GetAPI(endpoint, email);
+  const { data, setData, loading, totalPages } = GetAPI(
+    endpoint,
+    email,
+    page,
+    6
+  );
+  const reviews = data?.data;
 
   // Show loading spinner while data is being fetched
   if (loading) {
@@ -35,7 +42,7 @@ const MyReviewAndWatchListFunction = ({
   }
 
   // Show message if there are no reviews available
-  if (!data || data?.length === 0) {
+  if (!reviews || reviews?.length === 0) {
     return <NotFound message={message} text={text} path={path} />;
   }
 
@@ -58,7 +65,7 @@ const MyReviewAndWatchListFunction = ({
         // Send a DELETE request to delete the review
         await crudOperation("DELETE", `${endpoint}/${id}`);
         // Update the state to remove the deleted review immediate
-        setData(data?.filter((review) => review?._id !== id));
+        setData(reviews?.filter((review) => review?._id !== id));
         Swal.fire("Deleted", "Your review has been deleted.", "success");
       } catch (error) {
         console.error("Error deleting review:", error);
@@ -70,7 +77,7 @@ const MyReviewAndWatchListFunction = ({
 
   // Function to set the selected review for update
   const updateReview = (reviewId) => {
-    setSelectedReview(data?.find((data) => data?._id === reviewId));
+    setSelectedReview(reviews?.find((review) => review?._id === reviewId));
     document.getElementById("modal").showModal();
   };
 
@@ -124,6 +131,13 @@ const MyReviewAndWatchListFunction = ({
     }
   };
 
+  //Function to generate page number dynamically (show 5 pages max)
+  const getPageNumbers = () => {
+    let start = Math.max(1, page - 2);
+    let end = Math.min(totalPages, start + 4);
+    return Array.from({ length: end - start + 1 }, (_, i) => start + i);
+  };
+
   return (
     <div>
       <div className="px-4 md:px-0 md:w-11/12 mx-auto mt-24 flex flex-col-reverse lg:flex-row gap-4 md:gap-5 w-full">
@@ -144,7 +158,7 @@ const MyReviewAndWatchListFunction = ({
                 </tr>
               </thead>
               <tbody>
-                {data?.map((review, idx) => (
+                {reviews?.map((review, idx) => (
                   <tr key={review?._id} className="text-gray-500">
                     <th>{idx + 1}</th>
                     <td>
@@ -211,6 +225,46 @@ const MyReviewAndWatchListFunction = ({
                 ))}
               </tbody>
             </table>
+          </div>
+
+          {/* Pagination control */}
+          <div
+            className={`${transition} flex items-center flex-wrap gap-1 justify-center mt-6`}
+          >
+            {/* Previous Button */}
+            <button
+              onClick={() => setPage((prev) => Math.max(prev - 1, 1))}
+              disabled={page === 1}
+              className={`${transition} btn btn-outline rounded-none btn-sm mx-2`}
+            >
+              Previous
+            </button>
+            {/* Page Numbers */}
+            <div
+              className={`${transition} flex items-center gap-1 md:gap-2 flex-wrap`}
+            >
+              {getPageNumbers().map((p) => (
+                <button
+                  key={p}
+                  onClick={() => setPage(p)}
+                  className={`${transition} btn btn-sm ${
+                    p === page
+                      ? `bg-red-600 rounded-none text-white ${transition}`
+                      : `${transition} rounded-none btn-outline border-red-600 hover:border-none`
+                  }`}
+                >
+                  {p}
+                </button>
+              ))}
+            </div>
+            {/* Next Button */}
+            <button
+              onClick={() => setPage((prev) => Math.min(prev + 1, totalPages))}
+              disabled={page === totalPages}
+              className={`${transition} btn btn-outline rounded-none btn-sm mx-2`}
+            >
+              Next
+            </button>
           </div>
         </div>
         <div className="lg:w-1/3 w-full">
