@@ -8,7 +8,7 @@ import Loading from "../Loading/Loading";
 import Accordion from "../Accordion/Accordion";
 
 const Home = () => {
-  const { loading, data } = GetAPI("reviews");
+  const { loading, data } = GetAPI("reviews", null);
 
   // Display loading while data is being fetched
   if (loading) {

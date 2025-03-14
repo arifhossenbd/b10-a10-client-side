@@ -12,7 +12,7 @@ import GetAPI from "../../utils/GetAPI";
 
 const ReviewDetails = () => {
   const paramsId = useParams(); // Get the review ID from the URL parameter
-  const { data, loading } = GetAPI(`review/${paramsId?.id}`);
+  const { data, loading } = GetAPI(`review/${paramsId?.id}`, null);
   const { user } = useContext(AuthContext); // Access user authentication data
 
   // Destructure review data for easier access

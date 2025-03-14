@@ -7,8 +7,8 @@ import { Typewriter } from "react-simple-typewriter";
 
 const Sidebar = () => {
   const [activeTab, setActiveTab] = useState("recent");
-  const { data: recent, loading: recentLoading } = GetAPI("latestReviews");
-  const { data: popular, loading: popularLoading } = GetAPI("popularReviews");
+  const { data: recent, loading: recentLoading } = GetAPI("latestReviews", null);
+  const { data: popular, loading: popularLoading } = GetAPI("popularReviews", null);
 
   const formateDate = (timeStamp) => {
     if (!timeStamp) return "Invalid Date";

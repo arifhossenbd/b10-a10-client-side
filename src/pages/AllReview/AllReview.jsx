@@ -12,8 +12,8 @@ const AllReview = () => {
   const [isSearchVisible, setIsSearchVisible] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
   const [sortOption, setSortOption] = useState("");
-  const { loading, data, totalPages } = GetAPI("reviews", page, 6);
-  const reviews = data?.data || [];
+  const { loading, data, totalPages } = GetAPI("reviews", null, page, 6);
+  const reviews = data?.data;
   const searchRef = useRef(null); // Ref for the search container
 
   useEffect(() => {

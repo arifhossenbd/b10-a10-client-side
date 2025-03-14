@@ -11,7 +11,7 @@ import { Typewriter } from "react-simple-typewriter";
 import GetAPI from "../../utils/GetAPI";
 
 const Banner = () => {
-  const { data, loading } = GetAPI("latestGames");
+  const { data, loading } = GetAPI("latestGames", null);
   const location = useLocation();
   const presentPath = location?.pathname;
 

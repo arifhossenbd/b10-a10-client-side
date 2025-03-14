@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext, useState } from "react";
 import { AuthContext } from "../../../provider/AuthProvider/AuthContext";
 import crudOperation from "../../../utils/apiClient";
 import Swal from "sweetalert2";
@@ -11,50 +11,23 @@ import NotFound from "../../NotFound/NotFound";
 import { Link } from "react-router-dom";
 import Sidebar from "../../Sidebar/Sidebar";
 import { Typewriter } from "react-simple-typewriter";
+import GetAPI from "../../../utils/GetAPI";
 
 const MyReviewAndWatchListFunction = ({
   endpoint,
-  endpointEmail,
   message,
   text,
   path,
   headerText,
 }) => {
-  // State to store reviews data
-  const [data, setData] = useState([]);
-  //State for loading status
-  const [loading, setLoading] = useState(false);
   // State for Update Loading
   const [updateLoading, setUpdateLoading] = useState(false);
   //State to store the selected review for update
   const [selectedReview, setSelectedReview] = useState();
   //Getting the logged in user from AuthContext
   const { user } = useContext(AuthContext);
-  // Fetch reviews data when the component mount or the user changes
-  useEffect(() => {
-    const fetchData = async () => {
-      setLoading(true); // Set loading state to true during data fetching
-
-      // If no email or displayName is available, exit the function
-      if (!endpointEmail) {
-        console.log("Email is not available!");
-        return;
-      }
-      try {
-        // Fetch reviews for the logged-in user
-        const response = await crudOperation(
-          "GET",
-          `${endpoint}/${endpointEmail}`
-        );
-        setData(response); // Update the state with fetched data
-      } catch (error) {
-        console.error("Error fetching reviews", error); // Log error if fetching fails
-      } finally {
-        setLoading(false); // Reset loading state after fetching
-      }
-    };
-    fetchData(); // Call the fetchData function
-  }, [endpoint, endpointEmail]);
+  const email = user?.email;
+  const { data, setData, loading } = GetAPI(endpoint, email);
 
   // Show loading spinner while data is being fetched
   if (loading) {

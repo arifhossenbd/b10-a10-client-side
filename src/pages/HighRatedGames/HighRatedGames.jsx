@@ -6,7 +6,7 @@ import { Typewriter } from "react-simple-typewriter";
 import GetAPI from "../../utils/GetAPI";
 
 const HighRatedGames = () => {
-  const { data, loading } = GetAPI("topRatedReviews");
+  const { data, loading } = GetAPI("topRatedReviews", null);
   const formateDate = (timeStamp) => {
     if (!timeStamp) return "Invalid Date";
     const date = new Date(Number(timeStamp));
